@@ -66,5 +66,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
+#gem 'devise'
 gem "devise", "~> 4.9"
 gem 'mini_magick'
+gem 'image_processing', '~> 1.2'

@@ -9,9 +9,17 @@
   <% @project.photos.each do |photo| %>
     <li>
       <% if photo.image.attached? %>
-        <%= link_to image_tag(photo.image.variant(resize_to_limit: [100,100])), project_photo_path(@project, photo) %>
+        <%= link_to image_tag(photo.image.variant(resize_to_limit: [100, 100])), project_photo_path(@project, photo) %>
       <% end %>
-      <%= photo.note %>
+
+      <p>メモ: <%= photo.note %></p>
+
+      <% if photo.image_with_blackboard.attached? %>
+        <p>黒板合成画像:</p>
+        <%= image_tag photo.image_with_blackboard.variant(resize_to_limit: [200, 200]) %>
+      <% else %>
+        <p>黒板合成画像は未生成</p>
+      <% end %>
     </li>
   <% end %>
 </ul>

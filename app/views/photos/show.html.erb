@@ -1,12 +1,24 @@
-<h1>Photos#show</h1>
-<h2>アップロード写真</h2>
+<h1>写真詳細</h1>
+
+<p>工事番号: <%= @photo.work_number %></p>
+<p>工事内容: <%= @photo.work_content %></p>
+<p>工事箇所: <%= @photo.location %></p>
+
+<h2>黒板付き画像</h2>
+<%= image_tag @photo.image_with_blackboard, size: "500x300" if @photo.image_with_blackboard.attached? %>
+
+<h2>アップロードされた写真</h2>
 
 <% if @photo.image.attached? %>
-  <%= image_tag @photo.image, style: "max-width: 500px;" %>
-<% else %>
-  <p>画像はありません</p>
+  <p>元の画像:</p>
+  <%= image_tag @photo.image, width: 300 %>
 <% end %>
 
-<p>メモ：<%= @photo.note %></p>
+<% if @photo.image_with_blackboard.attached? %>
+  <p>黒板合成済み画像:</p>
+  <%= image_tag @photo.image_with_blackboard, width: 300 %>
+<% else %>
+  <p>合成画像はまだ生成されていません。</p>
+<% end %>
 
-<%= link_to "戻る", project_path(@project) %>
+<p>メモ: <%= @photo.note %></p>

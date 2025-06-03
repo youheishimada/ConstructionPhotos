@@ -1,36 +1,47 @@
 <h1>写真アップロード</h1>
 
-<%= form_with(model: [@project, @photo], local: true, html: { multipart: true }) do |f| %>
+<%= form_with model: [@project, @photo], local: true do |form| %>
   <div>
-    <%= f.label :image, "工事写真" %><br>
-    <%= f.file_field :image %>
+    <%= form.label :image, "写真のアップロード" %><br>
+    <%= form.file_field :image %>
   </div>
 
   <div>
-    <%= f.label :note, "メモ（任意）" %><br>
-    <%= f.text_area :note %>
+    <%= form.label :date, "年月日" %><br>
+    <%= form.date_field :date, value: Date.today %>
   </div>
 
-  <!-- 黒板情報入力欄 -->
-  <fieldset>
-    <legend>黒板情報</legend>
-    <%= f.fields_for :blackboard do |b| %>
-      <div>
-        <%= b.label :work_number, "工事番号" %><br>
-        <%= b.text_field :work_number %>
-      </div>
-      <div>
-        <%= b.label :work_content, "工事内容" %><br>
-        <%= b.text_field :work_content %>
-      </div>
-      <div>
-        <%= b.label :location, "工事箇所" %><br>
-        <%= b.text_field :location %>
-      </div>
-    <% end %>
-  </fieldset>
+  <div>
+    <%= form.label :work_number, "工事番号" %><br>
+    <%= form.text_field :work_number %>
+  </div>
 
   <div>
-    <%= f.submit "アップロード" %>
+    <%= form.label :project_name, "工事件名" %><br>
+    <%= form.text_field :project_name, value: @project.title %>
+  </div>
+
+  <div>
+    <%= form.label :work_content, "工事内容" %><br>
+    <%= form.text_field :work_content %>
+  </div>
+
+  <div>
+    <%= form.label :location, "箇所" %><br>
+    <%= form.text_field :location %>
+  </div>
+  
+  <div>
+    <%= form.label :contractor, "施工者" %><br>
+    <%= form.text_field :contractor, value: current_user.name %>
+  </div>
+
+  <div>
+    <%= form.label :note, "備考（任意）" %><br>
+    <%= form.text_area :note %>
+  </div>
+
+  <div>
+    <%= form.submit "アップロード" %>
   </div>
 <% end %>
