@@ -6,11 +6,21 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <nav>
+    <%= link_to 'ホーム', root_path %>
+    <% if request.referer.present? %>
+      | <a href="javascript:history.back()">戻る</a>
+    <% end %>
+    <hr>
+  </nav>
     <%= yield %>
   </body>
 </html>

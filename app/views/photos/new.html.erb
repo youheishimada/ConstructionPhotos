@@ -1,0 +1,36 @@
+<h1>写真アップロード</h1>
+
+<%= form_with(model: [@project, @photo], local: true, html: { multipart: true }) do |f| %>
+  <div>
+    <%= f.label :image, "工事写真" %><br>
+    <%= f.file_field :image %>
+  </div>
+
+  <div>
+    <%= f.label :note, "メモ（任意）" %><br>
+    <%= f.text_area :note %>
+  </div>
+
+  <!-- 黒板情報入力欄 -->
+  <fieldset>
+    <legend>黒板情報</legend>
+    <%= f.fields_for :blackboard do |b| %>
+      <div>
+        <%= b.label :work_number, "工事番号" %><br>
+        <%= b.text_field :work_number %>
+      </div>
+      <div>
+        <%= b.label :work_content, "工事内容" %><br>
+        <%= b.text_field :work_content %>
+      </div>
+      <div>
+        <%= b.label :location, "工事箇所" %><br>
+        <%= b.text_field :location %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <div>
+    <%= f.submit "アップロード" %>
+  </div>
+<% end %>

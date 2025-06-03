@@ -1,0 +1,12 @@
+<h1>Photos#show</h1>
+<h2>アップロード写真</h2>
+
+<% if @photo.image.attached? %>
+  <%= image_tag @photo.image, style: "max-width: 500px;" %>
+<% else %>
+  <p>画像はありません</p>
+<% end %>
+
+<p>メモ：<%= @photo.note %></p>
+
+<%= link_to "戻る", project_path(@project) %>

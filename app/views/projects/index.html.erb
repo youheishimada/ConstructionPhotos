@@ -1,0 +1,11 @@
+<h1>Projects#index</h1>
+<h2>プロジェクト一覧</h2>
+<%= link_to '新規プロジェクト作成', new_project_path %>
+
+<ul>
+  <% @projects.each do |project| %>
+    <li>
+      <%= link_to project.title, project_path(project) %>
+    </li>
+  <% end %>
+</ul>

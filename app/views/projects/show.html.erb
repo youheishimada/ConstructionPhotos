@@ -1,0 +1,17 @@
+<h2><%= @project.title %>（<%= @project.site_name %>）</h2>
+<p>開始日: <%= @project.start_date %> / 終了日: <%= @project.end_date %></p>
+<p>現場名：<%= @project.site_name %></p>
+
+<%= link_to '写真をアップロード', new_project_photo_path(@project) %>
+
+<h3>写真一覧</h3>
+<ul>
+  <% @project.photos.each do |photo| %>
+    <li>
+      <% if photo.image.attached? %>
+        <%= link_to image_tag(photo.image.variant(resize_to_limit: [100,100])), project_photo_path(@project, photo) %>
+      <% end %>
+      <%= photo.note %>
+    </li>
+  <% end %>
+</ul>

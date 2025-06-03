@@ -1,0 +1,12 @@
+<h1>Construction Photos ホーム</h1>
+
+<% if user_signed_in? %>
+  <p>こんにちは、<%= current_user.email %> さん！</p>
+  <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %><br>
+
+  <%= link_to 'プロジェクト一覧', projects_path %><br>
+  <%= link_to '新規プロジェクト作成', new_project_path %>
+<% else %>
+  <%= link_to 'ログイン', new_user_session_path %> |
+  <%= link_to '新規登録', new_user_registration_path %>
+<% end %>
