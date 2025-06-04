@@ -2,8 +2,7 @@
 
 <% if user_signed_in? %>
   <p>こんにちは、<%= current_user.email %> さん！</p>
-  <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %><br>
-
+  <%= button_to 'ログアウト', destroy_user_session_path, method: :delete %><br>
   <%= link_to 'プロジェクト一覧', projects_path %><br>
   <%= link_to '新規プロジェクト作成', new_project_path %>
 <% else %>
