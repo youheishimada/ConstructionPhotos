@@ -20,6 +20,9 @@
       <% else %>
         <p>黒板合成画像は未生成</p>
       <% end %>
+
+      <!-- ✅ ここに移動 -->
+      <%= link_to '詳細を見る', project_photo_path(@project, photo) %>
     </li>
   <% end %>
 </ul>

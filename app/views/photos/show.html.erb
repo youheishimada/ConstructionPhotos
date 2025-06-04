@@ -6,7 +6,7 @@
 
 <h2>黒板付き画像</h2>
 <%= image_tag @photo.image_with_blackboard, size: "500x300" if @photo.image_with_blackboard.attached? %>
-
+<%= link_to '詳細を見る', project_photo_path(@project, photo) %>
 <h2>アップロードされた写真</h2>
 
 <% if @photo.image.attached? %>
@@ -14,11 +14,13 @@
   <%= image_tag @photo.image, width: 300 %>
 <% end %>
 
+<h2>黒板付き画像</h2>
+
 <% if @photo.image_with_blackboard.attached? %>
-  <p>黒板合成済み画像:</p>
-  <%= image_tag @photo.image_with_blackboard, width: 300 %>
+  <%= image_tag @photo.image_with_blackboard %><br>
+  <%= link_to "ダウンロード", rails_blob_path(@photo.image_with_blackboard, disposition: "attachment"), download: "工事写真_#{@photo.id}.jpg" %>
 <% else %>
-  <p>合成画像はまだ生成されていません。</p>
+  <p>黒板付き画像は未生成です</p>
 <% end %>
 
 <p>メモ: <%= @photo.note %></p>
