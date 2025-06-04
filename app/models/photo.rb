@@ -12,4 +12,5 @@ class Photo < ApplicationRecord
 
   # ✅ 入力必須のバリデーション
   validates :image, :work_number, :work_content, :location, presence: true
+  validates :date, presence: true
 end

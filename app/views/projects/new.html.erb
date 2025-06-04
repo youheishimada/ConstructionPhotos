@@ -1,6 +1,18 @@
 <h1>Projects#new</h1>
 <h2>プロジェクト新規作成</h2>
 
+<%# ▼ バリデーションエラー表示 %>
+<% if @project.errors.any? %>
+  <div id="error_explanation" style="color: red; border: 1px solid #ccc; padding: 10px;">
+    <h3><%= pluralize(@project.errors.count, "件のエラー") %>があります:</h3>
+    <ul>
+      <% @project.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_with(model: @project, local: true) do |f| %>
   <div>
     <%= f.label :title, "工事件名" %>
