@@ -3,6 +3,7 @@
 class PhotosController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project
+  before_action :set_photo, only: [:show, :edit, :update, :destroy]
 
   def new
     @photo = @project.photos.build
@@ -16,9 +17,7 @@ class PhotosController < ApplicationController
       tmp_photo_path = Rails.root.join("tmp", "photo_#{@photo.id}.jpg")
       tmp_output_path = Rails.root.join("tmp", "combined_#{@photo.id}.jpg")
 
-      File.open(tmp_photo_path, 'wb') do |f|
-        f.write(@photo.image.download)
-      end
+      File.open(tmp_photo_path, 'wb') { |f| f.write(@photo.image.download) }
 
       text_data = {
         date: @photo.date.strftime("%Y年%m月%d日"),
@@ -27,7 +26,7 @@ class PhotosController < ApplicationController
         location: @photo.location,
         project_name: @photo.project_name,
         contractor: @photo.contractor
-    }
+      }
 
       Magic::BlackboardOverlay.compose_overlay(
         photo_path: tmp_photo_path.to_s,
@@ -53,8 +52,35 @@ class PhotosController < ApplicationController
   end
 
   def show
-    @photo = @project.photos.find(params[:id])
   end
+
+  def edit
+  end
+
+  def update
+    if @photo.update(photo_params)
+      ActionLog.create!(user: current_user, photo: @photo, action_type: "edit")
+      redirect_to [@project, @photo], notice: "写真情報を更新しました。"
+    else
+      render :edit, alert: "更新に失敗しました。"
+    end
+  end
+
+def destroy
+  deleted_photo_id = @photo.id
+
+  # 削除前にログを記録
+  ActionLog.create!(
+    user: current_user,
+    photo: @photo, # 関連付ける
+    action_type: "destroy",
+    detail: "Photo ID #{deleted_photo_id} を削除しました"
+  )
+
+  @photo.destroy
+
+  redirect_to project_path(@project), notice: "写真を削除しました。"
+end
 
   private
 
@@ -62,16 +88,20 @@ class PhotosController < ApplicationController
     @project = Project.find(params[:project_id])
   end
 
+  def set_photo
+    @photo = @project.photos.find(params[:id])
+  end
+
   def photo_params
-  params.require(:photo).permit(
-    :image,
-    :note,
-    :work_number,
-    :work_content,
-    :location,
-    :date,
-    :project_name,
-    :contractor
-  )
+    params.require(:photo).permit(
+      :image,
+      :note,
+      :work_number,
+      :work_content,
+      :location,
+      :date,
+      :project_name,
+      :contractor
+    )
   end
 end

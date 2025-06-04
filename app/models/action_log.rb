@@ -1,4 +1,4 @@
 class ActionLog < ApplicationRecord
   belongs_to :user
- belongs_to :photo, optional: true
+ belongs_to :photo
 end

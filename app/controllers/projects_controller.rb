@@ -18,8 +18,13 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def show
+    def show
     @project = current_user.projects.find(params[:id])
+
+    @grouped_photos = @project.photos
+      .where(deleted: false)
+      .order(created_at: :desc)
+      .group_by { |photo| photo.created_at.to_date }
   end
 
   private

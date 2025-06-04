@@ -6,5 +6,5 @@ class User < ApplicationRecord
 
   has_many :projects
   has_many :photos
-  has_many :action_logs
+  has_many :action_logs, dependent: :nullify
 end

@@ -6,7 +6,7 @@ class Photo < ApplicationRecord
   has_one_attached :image_with_blackboard
 
   has_one :blackboard, dependent: :destroy
-  has_many :action_logs, dependent: :destroy
+  has_many :action_logs, dependent: :nullify
 
   accepts_nested_attributes_for :blackboard
 

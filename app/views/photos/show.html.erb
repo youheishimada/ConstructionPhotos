@@ -6,16 +6,14 @@
 
 <h2>黒板付き画像</h2>
 <%= image_tag @photo.image_with_blackboard, size: "500x300" if @photo.image_with_blackboard.attached? %>
-<%= link_to '詳細を見る', project_photo_path(@project, photo) %>
-<h2>アップロードされた写真</h2>
 
+<h2>アップロードされた写真</h2>
 <% if @photo.image.attached? %>
   <p>元の画像:</p>
   <%= image_tag @photo.image, width: 300 %>
 <% end %>
 
 <h2>黒板付き画像</h2>
-
 <% if @photo.image_with_blackboard.attached? %>
   <%= image_tag @photo.image_with_blackboard %><br>
   <%= link_to "ダウンロード", rails_blob_path(@photo.image_with_blackboard, disposition: "attachment"), download: "工事写真_#{@photo.id}.jpg" %>
@@ -24,3 +22,24 @@
 <% end %>
 
 <p>メモ: <%= @photo.note %></p>
+
+<hr>
+
+<%= link_to '編集する', edit_project_photo_path(@project, @photo), class: "btn btn-primary" %>
+<%= button_to '削除する', project_photo_path(@project, @photo),
+      method: :delete,
+      data: { confirm: '本当に削除しますか？' },
+      class: "btn btn-danger" %>
+<h2>編集ログ</h2>
+<% if @photo.action_logs.any? %>
+  <ul>
+      <% @photo.action_logs.each do |log| %>
+    <li>
+      <%= log.action_type %> by <%= log.user.name || log.user.email %>
+      - <%= log.created_at.strftime("%Y/%m/%d %H:%M") %>
+    </li>
+      <% end %>
+  </ul>
+      <% else %>
+        <p>編集履歴はまだありません。</p>
+<% end %>

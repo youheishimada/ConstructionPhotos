@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   resources :projects, only: [:index, :show, :new, :create] do
-    resources :photos, only: [:new, :create, :show]
+    resources :photos, only: [:new, :create, :show, :edit, :update, :destroy]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

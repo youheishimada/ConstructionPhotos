@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_03_083339) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
   create_table "action_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "photo_id", null: false
+    t.bigint "photo_id"
     t.string "action_type"
     t.text "detail"
     t.datetime "created_at", null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_03_083339) do
     t.date "date"
     t.string "project_name"
     t.string "contractor"
+    t.boolean "deleted"
     t.index ["project_id"], name: "index_photos_on_project_id"
     t.index ["user_id"], name: "index_photos_on_user_id"
   end
@@ -103,7 +104,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_03_083339) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "action_logs", "photos"
+  add_foreign_key "action_logs", "photos", on_delete: :nullify
   add_foreign_key "action_logs", "users"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
