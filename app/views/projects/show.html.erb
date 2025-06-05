@@ -1,0 +1,33 @@
+<h2><%= @project.title %>（<%= @project.site_name %>）</h2>
+<p>開始日: <%= @project.start_date %> / 終了日: <%= @project.end_date %></p>
+<p>現場名：<%= @project.site_name %></p>
+
+<%= link_to '写真をアップロード', new_project_photo_path(@project) %>
+
+<h3>写真一覧（アップロード日別）</h3>
+
+<% @grouped_photos.each do |date, photos| %>
+  <h4><%= date.strftime("%Y年%m月%d日") %></h4>
+  <ul>
+    <% photos.each do |photo| %>
+      <li>
+        <% if photo.image.attached? %>
+          <%= link_to image_tag(photo.image.variant(resize_to_limit: [100, 100])), project_photo_path(@project, photo) %>
+        <% end %>
+
+        <p>メモ: <%= photo.note %></p>
+
+        <% if photo.image_with_blackboard.attached? %>
+          <p>黒板合成画像:</p>
+          <%= image_tag photo.image_with_blackboard.variant(resize_to_limit: [200, 200]) %>
+        <% else %>
+          <p>黒板合成画像は未生成</p>
+        <% end %>
+
+        <%= link_to '詳細を見る', project_photo_path(@project, photo) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+</ul>
+

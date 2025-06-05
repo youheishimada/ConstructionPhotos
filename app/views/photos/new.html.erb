@@ -1,0 +1,47 @@
+<h1>写真アップロード</h1>
+
+<%= form_with model: [@project, @photo], local: true do |form| %>
+  <div>
+    <%= form.label :image, "写真のアップロード" %><br>
+    <%= form.file_field :image %>
+  </div>
+
+  <div>
+    <%= form.label :date, "年月日" %><br>
+    <%= form.date_field :date, value: Date.today %>
+  </div>
+
+  <div>
+    <%= form.label :work_number, "工事番号" %><br>
+    <%= form.text_field :work_number %>
+  </div>
+
+  <div>
+    <%= form.label :project_name, "工事件名" %><br>
+    <%= form.text_field :project_name, value: @project.title %>
+  </div>
+
+  <div>
+    <%= form.label :work_content, "工事内容" %><br>
+    <%= form.text_field :work_content %>
+  </div>
+
+  <div>
+    <%= form.label :location, "箇所" %><br>
+    <%= form.text_field :location %>
+  </div>
+  
+  <div>
+    <%= form.label :contractor, "施工者" %><br>
+    <%= form.text_field :contractor, value: current_user.name %>
+  </div>
+
+  <div>
+    <%= form.label :note, "備考（任意）" %><br>
+    <%= form.text_area :note %>
+  </div>
+
+  <div>
+    <%= form.submit "アップロード" %>
+  </div>
+<% end %>
