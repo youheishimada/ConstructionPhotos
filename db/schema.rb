@@ -11,7 +11,10 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
-  create_table "action_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "action_logs", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "photo_id"
     t.string "action_type"
@@ -22,7 +25,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
     t.index ["user_id"], name: "index_action_logs_on_user_id"
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -32,7 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -44,13 +47,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "blackboards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "blackboards", force: :cascade do |t|
     t.bigint "photo_id", null: false
     t.string "work_number"
     t.text "work_content"
@@ -60,7 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
     t.index ["photo_id"], name: "index_blackboards_on_photo_id"
   end
 
-  create_table "photos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "photos", force: :cascade do |t|
     t.text "note"
     t.datetime "taken_at"
     t.string "category"
@@ -80,7 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
     t.index ["user_id"], name: "index_photos_on_user_id"
   end
 
-  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "projects", force: :cascade do |t|
     t.string "title"
     t.string "site_name"
     t.date "start_date"
@@ -91,7 +94,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_04_065037) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

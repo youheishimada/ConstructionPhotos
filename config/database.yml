@@ -1,10 +1,31 @@
+#default: &default
+  #adapter: mysql2
+  #encoding: utf8mb4
+  #pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  #username: root
+  #password:
+  #socket: /tmp/mysql.sock
+
+#development:
+  #<<: *default
+  #database: construction_photos_development
+
+#test:
+  #<<: *default
+  #database: construction_photos_test
+
+#production:
+  #<<: *default
+  #database: construction_photos_production
+  #username: construction_photos
+  #password: <%= ENV["CONSTRUCTION_PHOTOS_DATABASE_PASSWORD"] %>
+
+
 default: &default
-  adapter: mysql2
-  encoding: utf8mb4
+  adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
-  socket: /tmp/mysql.sock
+  timeout: 5000
 
 development:
   <<: *default
@@ -16,6 +37,7 @@ test:
 
 production:
   <<: *default
-  database: construction_photos_production
-  username: construction_photos
-  password: <%= ENV["CONSTRUCTION_PHOTOS_DATABASE_PASSWORD"] %>
+  database: <%= ENV["DB_NAME"] %>
+  username: <%= ENV["DB_USER"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  host: <%= ENV["DB_HOST"] %>
