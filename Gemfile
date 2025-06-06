@@ -79,7 +79,3 @@ gem 'mini_magick'
 gem 'image_processing', '~> 1.2'
 gem 'rails-i18n'
 gem 'aws-sdk-s3', require: false
-
-git add render.yaml
-git commit -m "Add render.yaml"
-git push origin main
