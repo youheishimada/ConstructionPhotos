@@ -12,8 +12,6 @@ Rails.application.configure do
 
   config.assets.compile = false
 
-  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  #config.force_ssl = true
 
   config.logger = ActiveSupport::Logger.new(STDOUT)
     .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
@@ -29,10 +27,10 @@ Rails.application.configure do
 
   config.i18n.fallbacks = true
 
-  # Don't log any deprecations.
+
   config.active_support.report_deprecations = false
 
-  # Do not dump schema after migrations.
+
   config.active_record.dump_schema_after_migration = false
 
   config.active_storage.service = :amazon
