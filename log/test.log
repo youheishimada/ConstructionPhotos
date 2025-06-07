@@ -1,0 +1,1257 @@
+  [1m[35m (62.9ms)[0m  [1m[35mDROP DATABASE IF EXISTS `construction_photos_test`[0m
+  [1m[35m (8.8ms)[0m  [1m[35mCREATE DATABASE `construction_photos_test` DEFAULT CHARACTER SET `utf8mb4`[0m
+  [1m[35m (8.8ms)[0m  [1m[35mDROP TABLE IF EXISTS `action_logs` CASCADE[0m
+  [1m[35m (72.4ms)[0m  [1m[35mCREATE TABLE `action_logs` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `user_id` bigint NOT NULL, `photo_id` bigint, `action_type` varchar(255), `detail` text, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, INDEX `index_action_logs_on_photo_id` (`photo_id`), INDEX `index_action_logs_on_user_id` (`user_id`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (2.9ms)[0m  [1m[35mDROP TABLE IF EXISTS `active_storage_attachments` CASCADE[0m
+  [1m[35m (62.2ms)[0m  [1m[35mCREATE TABLE `active_storage_attachments` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `name` varchar(255) NOT NULL, `record_type` varchar(255) NOT NULL, `record_id` bigint NOT NULL, `blob_id` bigint NOT NULL, `created_at` datetime(6) NOT NULL, INDEX `index_active_storage_attachments_on_blob_id` (`blob_id`), UNIQUE INDEX `index_active_storage_attachments_uniqueness` (`record_type`, `record_id`, `name`, `blob_id`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (5.2ms)[0m  [1m[35mDROP TABLE IF EXISTS `active_storage_blobs` CASCADE[0m
+  [1m[35m (91.7ms)[0m  [1m[35mCREATE TABLE `active_storage_blobs` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `key` varchar(255) NOT NULL, `filename` varchar(255) NOT NULL, `content_type` varchar(255), `metadata` text, `service_name` varchar(255) NOT NULL, `byte_size` bigint NOT NULL, `checksum` varchar(255), `created_at` datetime(6) NOT NULL, UNIQUE INDEX `index_active_storage_blobs_on_key` (`key`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (3.5ms)[0m  [1m[35mDROP TABLE IF EXISTS `active_storage_variant_records` CASCADE[0m
+  [1m[35m (50.6ms)[0m  [1m[35mCREATE TABLE `active_storage_variant_records` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `blob_id` bigint NOT NULL, `variation_digest` varchar(255) NOT NULL, UNIQUE INDEX `index_active_storage_variant_records_uniqueness` (`blob_id`, `variation_digest`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (3.8ms)[0m  [1m[35mDROP TABLE IF EXISTS `blackboards` CASCADE[0m
+  [1m[35m (37.7ms)[0m  [1m[35mCREATE TABLE `blackboards` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `photo_id` bigint NOT NULL, `work_number` varchar(255), `work_content` text, `location` varchar(255), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, INDEX `index_blackboards_on_photo_id` (`photo_id`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (4.3ms)[0m  [1m[35mDROP TABLE IF EXISTS `photos` CASCADE[0m
+  [1m[35m (57.6ms)[0m  [1m[35mCREATE TABLE `photos` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `note` text, `taken_at` datetime(6), `category` varchar(255), `project_id` bigint NOT NULL, `user_id` bigint NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, `image_with_blackboard` varchar(255), `work_number` varchar(255), `work_content` varchar(255), `location` varchar(255), `date` date, `project_name` varchar(255), `contractor` varchar(255), `deleted` tinyint(1), INDEX `index_photos_on_project_id` (`project_id`), INDEX `index_photos_on_user_id` (`user_id`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (4.9ms)[0m  [1m[35mDROP TABLE IF EXISTS `projects` CASCADE[0m
+  [1m[35m (46.2ms)[0m  [1m[35mCREATE TABLE `projects` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `title` varchar(255), `site_name` varchar(255), `start_date` date, `end_date` date, `user_id` bigint NOT NULL, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, INDEX `index_projects_on_user_id` (`user_id`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (3.8ms)[0m  [1m[35mDROP TABLE IF EXISTS `users` CASCADE[0m
+  [1m[35m (56.9ms)[0m  [1m[35mCREATE TABLE `users` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime(6), `remember_created_at` datetime(6), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL, `name` varchar(255), UNIQUE INDEX `index_users_on_email` (`email`), UNIQUE INDEX `index_users_on_reset_password_token` (`reset_password_token`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci[0m
+  [1m[35m (108.0ms)[0m  [1m[35mALTER TABLE `action_logs` ADD CONSTRAINT `fk_rails_b7ef1a3f59`
+FOREIGN KEY (`photo_id`)
+  REFERENCES `photos` (`id`)
+ ON DELETE SET NULL[0m
+  [1m[35m (98.7ms)[0m  [1m[35mALTER TABLE `action_logs` ADD CONSTRAINT `fk_rails_98eb6e1bf3`
+FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`)
+[0m
+  [1m[35m (103.9ms)[0m  [1m[35mALTER TABLE `active_storage_attachments` ADD CONSTRAINT `fk_rails_c3b3935057`
+FOREIGN KEY (`blob_id`)
+  REFERENCES `active_storage_blobs` (`id`)
+[0m
+  [1m[35m (98.1ms)[0m  [1m[35mALTER TABLE `active_storage_variant_records` ADD CONSTRAINT `fk_rails_993965df05`
+FOREIGN KEY (`blob_id`)
+  REFERENCES `active_storage_blobs` (`id`)
+[0m
+  [1m[35m (89.1ms)[0m  [1m[35mALTER TABLE `blackboards` ADD CONSTRAINT `fk_rails_fc40b8ee84`
+FOREIGN KEY (`photo_id`)
+  REFERENCES `photos` (`id`)
+[0m
+  [1m[35m (112.0ms)[0m  [1m[35mALTER TABLE `photos` ADD CONSTRAINT `fk_rails_22e77ffeb6`
+FOREIGN KEY (`project_id`)
+  REFERENCES `projects` (`id`)
+[0m
+  [1m[35m (96.7ms)[0m  [1m[35mALTER TABLE `photos` ADD CONSTRAINT `fk_rails_c79d76afc0`
+FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`)
+[0m
+  [1m[35m (100.7ms)[0m  [1m[35mALTER TABLE `projects` ADD CONSTRAINT `fk_rails_b872a6760a`
+FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`id`)
+[0m
+  [1m[35m (31.5ms)[0m  [1m[35mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[35m (6.8ms)[0m  [1m[32mINSERT INTO `schema_migrations` (version) VALUES (20250604065037)[0m
+  [1m[35m (7.1ms)[0m  [1m[32mINSERT INTO `schema_migrations` (version) VALUES
+(20250604034554),
+(20250604034454),
+(20250603083339),
+(20250603081745),
+(20250603053425),
+(20250603050456),
+(20250602090554),
+(20250602090507),
+(20250602090449),
+(20250602090431),
+(20250602085439),
+(20250602085412);[0m
+  [1m[35m (33.9ms)[0m  [1m[35mCREATE TABLE `ar_internal_metadata` (`key` varchar(255) NOT NULL PRIMARY KEY, `value` varchar(255), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.1ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::InternalMetadata Create (4.5ms)[0m  [1m[32mINSERT INTO `ar_internal_metadata` (`key`, `value`, `created_at`, `updated_at`) VALUES ('environment', 'test', '2025-06-04 09:14:17.370947', '2025-06-04 09:14:17.370950')[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::InternalMetadata Create (6.6ms)[0m  [1m[32mINSERT INTO `ar_internal_metadata` (`key`, `value`, `created_at`, `updated_at`) VALUES ('schema_sha1', '445fa0d5eb7f44edb15215a8b154eee85887b510', '2025-06-04 09:14:17.378436', '2025-06-04 09:14:17.378438')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$fkWrrasFURRG5BkgZuG/eODyYnez6e2RfsDeB8s7ZxG2B5YKdETA2', NULL, NULL, NULL, '2025-06-04 09:31:13.796558', '2025-06-04 09:31:13.796558', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$QldKXMlRTVte4XdX1bdvzOBnq8i16qOGti9l4m1IZ/2xyhSjj7si2', NULL, NULL, NULL, '2025-06-04 09:31:13.836296', '2025-06-04 09:31:13.836296', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$3dhZ.Ummpprj4tabbWKhBuDpg5XfRwylO2ZZpZR25Ywr3BUXVpfKK', NULL, NULL, NULL, '2025-06-04 09:31:13.872906', '2025-06-04 09:31:13.872906', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$xOhczfWRE9nfR0dw4PRBhO/ug2W1x8bW3u6tQvVb7QNcKjBvXikRK', NULL, NULL, NULL, '2025-06-04 09:31:13.882751', '2025-06-04 09:31:13.882751', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$j9XKXpjsNY/gm4OX3sS9GuQZ7b7y9WTV7b0QxCxXLhB5dZFykvE6u', NULL, NULL, NULL, '2025-06-04 09:31:13.894246', '2025-06-04 09:31:13.894246', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$7lqK5qWxXUIQPdUt0VvjDutlR1caLGQlW3uNGcJfk38RPHo71KEFu', NULL, NULL, NULL, '2025-06-04 09:34:02.987648', '2025-06-04 09:34:02.987648', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$KKMNdzH3Wq.CMKpdymLJ8O/U39dk.8ne4A3BZkoWAT0Ff.xW2Zp/a', NULL, NULL, NULL, '2025-06-04 09:34:03.023351', '2025-06-04 09:34:03.023351', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$dBZjgN668zyw4AFi1DQmEO5edDZGO7YzTunFViUPoXi.IX5E7B3O.', NULL, NULL, NULL, '2025-06-04 09:34:03.313577', '2025-06-04 09:34:03.313577', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$cUT8KQdal9CnMGy.VJhW7Obfwh0DtTMlIMlvp/4kYPQTClyte3Sxy', NULL, NULL, NULL, '2025-06-04 09:34:03.323661', '2025-06-04 09:34:03.323661', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$kYd.MYqcoeRMXM1J2b/XeudUwDR9fLCfggW5DUw9oIQEK8FfeXLt.', NULL, NULL, NULL, '2025-06-04 09:34:03.333308', '2025-06-04 09:34:03.333308', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.8ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.5ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (4.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$F.8pkyrZCM/4jkzNEU4DZuf8uCslwWF8YJ1cIVZJ6YDAurHtgp4uq', NULL, NULL, NULL, '2025-06-04 11:00:47.651563', '2025-06-04 11:00:47.651563', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (7.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$EO3.5v210JWDyD/PhaA83ujuAw9CM./c/Af3C0/iXWR3vyS1zMHAC', NULL, NULL, NULL, '2025-06-04 11:00:47.694637', '2025-06-04 11:00:47.694637', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (6.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$BUysJ2xN4Oln8buJy6S7wu2mkev21KJOI0AKtylbicEup/Z9l/0lq', NULL, NULL, NULL, '2025-06-04 11:00:47.757454', '2025-06-04 11:00:47.757454', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$A2tXzpRxnRIVkNzgQRYMi.pSKCv1wvHgLxOcmucVE8EOrxj1h8dYu', NULL, NULL, NULL, '2025-06-04 11:00:47.766648', '2025-06-04 11:00:47.766648', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$bqoZtTya/Tzo1zI2r4Dcdeavo2uGVe1I.NT2Tz3rFffunX3lJPPo2', NULL, NULL, NULL, '2025-06-04 11:00:47.776688', '2025-06-04 11:00:47.776688', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$6/fg3jhHToFkKC0GF0U6jeIA5bCUsO9hFS08KW0TyQrOIAbnH/gk.', NULL, NULL, NULL, '2025-06-04 11:02:42.315687', '2025-06-04 11:02:42.315687', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$X/9iYehZQ.4raXZ3zzsxfOjFxgNCbnhmVB49cV8Sw/UcKfeanHFZW', NULL, NULL, NULL, '2025-06-04 11:02:42.353770', '2025-06-04 11:02:42.353770', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (10.9ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$PCnASReBCB.bGKzhi/KZHOVMJQbvlOJd9N1n03LAP2RqrLCrAMxbK', NULL, NULL, NULL, '2025-06-04 11:02:42.400702', '2025-06-04 11:02:42.400702', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$4ITfF6FhjQD8NbCAD3rQBezdOVugMY8KqVeSWMT1wUvCUgY9iESxu', NULL, NULL, NULL, '2025-06-04 11:02:42.419832', '2025-06-04 11:02:42.419832', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$Ct7osGY6/xJ6bPlqDUbDGO5PYDi6ypniKA08wbk3SxYbkVVKDPY9S', NULL, NULL, NULL, '2025-06-04 11:02:42.429825', '2025-06-04 11:02:42.429825', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.9ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$TrMeQngSAsmaE/J9YfIwEuWYpQPUur7EfGVTNud2l.xNIwfmpsxjy', NULL, NULL, NULL, '2025-06-04 11:13:27.148434', '2025-06-04 11:13:27.148434', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (8.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$kN.jlml2M4wfkgkBXPfAK.XJsZmMz2670ge04IY03FxV.6PB2h0Ou', NULL, NULL, NULL, '2025-06-04 11:13:27.171063', '2025-06-04 11:13:27.171063', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$KKmrpipxwC/A.KirKxbiRuWh6EGmXBsMR76ubWCx13I6mFpi48iEm', NULL, NULL, NULL, '2025-06-04 11:13:27.217264', '2025-06-04 11:13:27.217264', NULL)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$zBUWrMSUroaeQJcUTf1pxO8c67grN8P75fO4pyn.iFgDrROCToy3y', NULL, NULL, NULL, '2025-06-04 11:13:27.226915', '2025-06-04 11:13:27.226915', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$2nk1ND8SlU3zO08jxHiiue.kplyyB7pyqX/1h/xMiwXSv4nMZB/ni', NULL, NULL, NULL, '2025-06-04 11:13:27.239499', '2025-06-04 11:13:27.239499', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.2ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (2.0ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$RLFxzFk.uzl9VvFta4uPNuHEiz5.e3QEh6zEQFeB.gyUbcGyCNoU6', NULL, NULL, NULL, '2025-06-04 11:22:41.037938', '2025-06-04 11:22:41.037938', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (3.0ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 26, '2025-06-04 11:22:41.054904', '2025-06-04 11:22:41.054904')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.0ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$S2vybDltcGXa9P4OV3o2Fe3IRKAoPrT4thsEtxTnONHZvzu4dRkpO', NULL, NULL, NULL, '2025-06-04 11:22:41.109856', '2025-06-04 11:22:41.109856', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.6ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 27, '2025-06-04 11:22:41.112655', '2025-06-04 11:22:41.112655')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (8.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$ck2ehbfkOfKDVeWwymA1teaDpHwFplnV4UwNs5HoiBLIsIzvclUCS', NULL, NULL, NULL, '2025-06-04 11:22:41.172091', '2025-06-04 11:22:41.172091', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.4ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 28, '2025-06-04 11:22:41.173977', '2025-06-04 11:22:41.173977')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.1ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$lA0Odn720iTY9r9t/8tltu9OIlkwdBk7HHN6bS8gZbDYOv5DbruW2', NULL, NULL, NULL, '2025-06-04 11:22:41.184882', '2025-06-04 11:22:41.184882', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.8ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 29, '2025-06-04 11:22:41.188368', '2025-06-04 11:22:41.188368')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.9ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$5C2Po7O89AswzPcdGCCwn.cwN1vO//hGOPjZJvpQWz0/JlNVni5WC', NULL, NULL, NULL, '2025-06-04 11:22:41.197216', '2025-06-04 11:22:41.197216', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$hRz5wNQNEVayrcOQgSMgxu7qudaZJIs9XWGQPCqhuuCzJOJ05VSD2', NULL, NULL, NULL, '2025-06-04 11:22:41.206567', '2025-06-04 11:22:41.206567', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.2ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$eKpAWjEoIJs15fuBsmDjXOSUAM26btQBIfBq.bgmvhQSvICdtMs3S', NULL, NULL, NULL, '2025-06-04 11:22:41.216866', '2025-06-04 11:22:41.216866', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$u0iJCr.H0zx6WOA364g9weyx9kjFwfCVemF.h93vd09WYqVAFMAPS', NULL, NULL, NULL, '2025-06-04 11:22:41.227965', '2025-06-04 11:22:41.227965', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$WzvDyMJJaaHVXCYubQItNO6Rtu8qoH2ErzJoBOCAQXWhaMq8pFTYu', NULL, NULL, NULL, '2025-06-04 11:22:41.237678', '2025-06-04 11:22:41.237678', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$aJqgqUMVeaR54.pCe7Wlmu1iZ1BB3zQ90Ft7DaRl5rxsWLjl/XD7u', NULL, NULL, NULL, '2025-06-04 11:22:41.246935', '2025-06-04 11:22:41.246935', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (7.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.1ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$xHmYn48ZlCxeoYeYAcOdx.UF8V9bU4WIJE7P.7q72P5vd./.e0V/a', NULL, NULL, NULL, '2025-06-04 11:23:20.708091', '2025-06-04 11:23:20.708091', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.7ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 36, '2025-06-04 11:23:20.720358', '2025-06-04 11:23:20.720358')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$xwCvFW18rjImfeNhzgrPwORZE.z1i90RMI7FDy2j63YMTS7Vg6It2', NULL, NULL, NULL, '2025-06-04 11:23:20.757533', '2025-06-04 11:23:20.757533', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.4ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 37, '2025-06-04 11:23:20.759784', '2025-06-04 11:23:20.759784')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$M7DnfvGpNtl2iiJVAU67JuEbdh1dzJMOv3H6woSo3KS3OKvnXMNeq', NULL, NULL, NULL, '2025-06-04 11:23:20.805778', '2025-06-04 11:23:20.805778', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.6ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 38, '2025-06-04 11:23:20.808326', '2025-06-04 11:23:20.808326')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$qjEywKFdm7x81B2YbZTT0OOyaGEKw4JlPY4NNp/Sf9HV4uO40p1S.', NULL, NULL, NULL, '2025-06-04 11:23:20.817300', '2025-06-04 11:23:20.817300', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.3ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 39, '2025-06-04 11:23:20.819132', '2025-06-04 11:23:20.819132')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$IQgF/dmIGJQPDLIhEE27vuLB8IjCS4NeBi44VRRDTLLjYBXMFrKH6', NULL, NULL, NULL, '2025-06-04 11:23:20.828490', '2025-06-04 11:23:20.828490', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$pYPXmSZMJT.eY8k/sVuewu2E/bd7ipdg68vzHDbL/hMfahNTulmcK', NULL, NULL, NULL, '2025-06-04 11:23:20.839915', '2025-06-04 11:23:20.839915', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$JB1Jq6JB5rrSgmSv0JalPO7tQH8qjmDqpo4u2ZbTdRCtaw8b9dTiu', NULL, NULL, NULL, '2025-06-04 11:23:20.849015', '2025-06-04 11:23:20.849015', NULL)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$GrS8h8lsQZRV/kEo0M6TtO7URafuVIkHNSjpnn2slWmgdNmaBHHGe', NULL, NULL, NULL, '2025-06-04 11:23:20.858407', '2025-06-04 11:23:20.858407', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$GIfy611S8jovnNFSEiXwvumKu4HBrXltSeAiRvxRzfY.vUzcP5N22', NULL, NULL, NULL, '2025-06-04 11:23:20.867352', '2025-06-04 11:23:20.867352', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$FDmTp3WHwOPZZ4GxSSt0r.v7fh4xFRvFAqtstxnQYvrqMKvQ9qkkK', NULL, NULL, NULL, '2025-06-04 11:23:20.874819', '2025-06-04 11:23:20.874819', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$QFYjzL/vedVGAWANegjh.ehnl2AvgrMop6yj1AaxMBoSLgESfvO9a', NULL, NULL, NULL, '2025-06-04 11:28:01.062863', '2025-06-04 11:28:01.062863', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.0ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 46, '2025-06-04 11:28:01.075415', '2025-06-04 11:28:01.075415')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$VF0stjiWjN/F4bvZiiOL9u.UUdCN05VV1yZ06b2nEk5CfjJx3EhhG', NULL, NULL, NULL, '2025-06-04 11:28:01.111582', '2025-06-04 11:28:01.111582', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.4ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 47, '2025-06-04 11:28:01.114160', '2025-06-04 11:28:01.114160')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$fk/RctU1oMs2HymUtPFxM.9YfW2r8PbYNlktPZwYQXx4tLB4PN/XC', NULL, NULL, NULL, '2025-06-04 11:28:01.212065', '2025-06-04 11:28:01.212065', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.1ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 48, '2025-06-04 11:28:01.214103', '2025-06-04 11:28:01.214103')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$CJD2h5B1aXTIPGJnjATUUun5Vcc/ZvNG7StJGQUp8VDkeCyfcd2SS', NULL, NULL, NULL, '2025-06-04 11:28:01.224389', '2025-06-04 11:28:01.224389', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.5ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 49, '2025-06-04 11:28:01.226677', '2025-06-04 11:28:01.226677')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$5JDxngef0IS7vXDPOSferej18J3ODBAD3PBYvIqnpGVHqVLvYE5Om', NULL, NULL, NULL, '2025-06-04 11:28:01.234530', '2025-06-04 11:28:01.234530', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$Ui3WmBAekTpH3nC/mRvYG.SeSYKCL4yqqNlyLrIH1DAkzRN/2QDDy', NULL, NULL, NULL, '2025-06-04 11:28:01.243883', '2025-06-04 11:28:01.243883', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$fBseq0h93QNocycaGOR4vu.VPC9PISGEYxCIDexKybZRSFLVTjIW.', NULL, NULL, NULL, '2025-06-04 11:28:01.252191', '2025-06-04 11:28:01.252191', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$onX7/4BXY8QpGsdE0BoAaOAaszGSu2EwRakdAhwti7AjmM6KS/39e', NULL, NULL, NULL, '2025-06-04 11:28:01.260942', '2025-06-04 11:28:01.260942', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$.xxQ8i1BAde5WMaq5r9yZ.ET3dM.VPfXuQPDyAIy0yFxa2zZH/7Mq', NULL, NULL, NULL, '2025-06-04 11:28:01.271639', '2025-06-04 11:28:01.271639', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$LZ1Yq8D0JFWhIti7sjghKOQ/8FwXxUIg6VfBRH.8ulIsmUvFYy7f.', NULL, NULL, NULL, '2025-06-04 11:28:01.280198', '2025-06-04 11:28:01.280198', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$DkuekzTDt0tpl4MV1nxRXu4kF8KFmVFXxY0NYqlf8XkZ2L5M75JWy', NULL, NULL, NULL, '2025-06-04 11:30:56.183424', '2025-06-04 11:30:56.183424', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.1ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 56, '2025-06-04 11:30:56.197911', '2025-06-04 11:30:56.197911')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$EF82PICzU7RhyV4b0642RO.BpCmHvsFnKeSz0QLrhjBwiCbaCVRwS', NULL, NULL, NULL, '2025-06-04 11:30:56.273579', '2025-06-04 11:30:56.273579', NULL)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.1ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 57, '2025-06-04 11:30:56.276453', '2025-06-04 11:30:56.276453')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$k1mv2EvoERtPuQBNkXb0UOxC5ARDc1UsC.D8gqdxCZnueLkipkx1.', NULL, NULL, NULL, '2025-06-04 11:30:56.332947', '2025-06-04 11:30:56.332947', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.9ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 58, '2025-06-04 11:30:56.335145', '2025-06-04 11:30:56.335145')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.0ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$Bbn6Y13d3pgcWw48KIbtT.4UFqix25ok2M6AqTdgEybcgcnjeMN96', NULL, NULL, NULL, '2025-06-04 11:30:56.356094', '2025-06-04 11:30:56.356094', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.6ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 59, '2025-06-04 11:30:56.359091', '2025-06-04 11:30:56.359091')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$I7DtnLeqf1OvZKTwLn4hNu1h2eDRoVLVroz4PpqJ1fP1cbE7Ko.Ya', NULL, NULL, NULL, '2025-06-04 11:30:56.373908', '2025-06-04 11:30:56.373908', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$QB3vaTelcIeEzCL5hNyLfOpTbmHNBqFLRnhh3ZsNVA9e1lDEjyIpi', NULL, NULL, NULL, '2025-06-04 11:30:56.386968', '2025-06-04 11:30:56.386968', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$tL/cWq5H/N0W/V15SoKnk./4hkcGbhknn.V31N1lEmBTajSqqa8Bu', NULL, NULL, NULL, '2025-06-04 11:30:56.397847', '2025-06-04 11:30:56.397847', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$2lT2ZOz5bGrK7xeVfgWteOu9Ciu5yMHAvNHB9uwUhbucu6mIpFGHi', NULL, NULL, NULL, '2025-06-04 11:30:56.408629', '2025-06-04 11:30:56.408629', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$veC2yjzOfMR.YDfNUBwPgeZTcKuwiM5gjLYJoQzHIH6bYlK8c3/HO', NULL, NULL, NULL, '2025-06-04 11:30:56.419497', '2025-06-04 11:30:56.419497', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$IQZOMBoo41qOnyR/LFI22.vS69wG7xmdzbelFZJha/pHSSIIhUme2', NULL, NULL, NULL, '2025-06-04 11:30:56.430696', '2025-06-04 11:30:56.430696', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.9ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$IgB0eKvDG2JX3gec7QmYr.o0LuigKhwvBq3XA8atnHop69IAW8kyW', NULL, NULL, NULL, '2025-06-04 11:31:26.173187', '2025-06-04 11:31:26.173187', NULL)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.2ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 66, '2025-06-04 11:31:26.195277', '2025-06-04 11:31:26.195277')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$/mUjR0TArp3Abj1CfpqoC.Uumw6m1u3zZMDj19dd3N9scB8dZYuIe', NULL, NULL, NULL, '2025-06-04 11:31:26.260700', '2025-06-04 11:31:26.260700', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.4ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 67, '2025-06-04 11:31:26.262697', '2025-06-04 11:31:26.262697')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$/Y4boY8ydFxb7aogInPPKONIRS03plVMtzJKJylG86Z1gcpt3RjKq', NULL, NULL, NULL, '2025-06-04 11:31:26.307780', '2025-06-04 11:31:26.307780', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.8ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 68, '2025-06-04 11:31:26.310556', '2025-06-04 11:31:26.310556')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$CblR5H4DRAzpypCH1WORBO4VIRgGjdbKO8IzQtI562U8kInEooidW', NULL, NULL, NULL, '2025-06-04 11:31:26.328827', '2025-06-04 11:31:26.328827', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.5ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 69, '2025-06-04 11:31:26.330419', '2025-06-04 11:31:26.330419')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (1.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$7kM6ZGGbUh9p1UzhI9YgAOawTQxBiCIBPs8H2rWvcNMLwWd5D/siK', NULL, NULL, NULL, '2025-06-04 11:31:26.340108', '2025-06-04 11:31:26.340108', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$owbmCylzRmIcXyIdn8Nk4eEn/3z3qiHYq921uQqRNCHcPM4zOh8ny', NULL, NULL, NULL, '2025-06-04 11:31:26.353917', '2025-06-04 11:31:26.353917', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$SoT1oEa.qX1EdcpXlIJ./OcbTB3sLPxxyUNtsYVFiteBfV0FKO2ne', NULL, NULL, NULL, '2025-06-04 11:31:26.365152', '2025-06-04 11:31:26.365152', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$cspyXXOmFJ.dLfPgz9uvRO0issMMr.sHoQWDiKT98Mbr6pV/OHRKm', NULL, NULL, NULL, '2025-06-04 11:31:26.374910', '2025-06-04 11:31:26.374910', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$srJ0RyTQa0kk8Vbgi8ZX2eMB58MkMjyNHNkgpmMP1mZAqxQabXbpu', NULL, NULL, NULL, '2025-06-04 11:31:26.387044', '2025-06-04 11:31:26.387044', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$mLNgmA9LoirJk4mOSPE5N.ijmia2ZJMa5Nk4ohgMImm4q.SM3bxEC', NULL, NULL, NULL, '2025-06-04 11:31:26.397458', '2025-06-04 11:31:26.397458', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (3.2ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$ktLYYOUyVsVjsIQaKIj2XOBmOXDWIwrOJLzeHkmkE8EdFfnrAEldS', NULL, NULL, NULL, '2025-06-04 11:36:00.730095', '2025-06-04 11:36:00.730095', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.8ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 76, '2025-06-04 11:36:00.750170', '2025-06-04 11:36:00.750170')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$dONVr8kG2UbkFuIZDOFrR.ZwGs9J6RNXHZwRYq0kigc.sqD8AwM0m', NULL, NULL, NULL, '2025-06-04 11:36:00.817345', '2025-06-04 11:36:00.817345', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.5ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 77, '2025-06-04 11:36:00.819916', '2025-06-04 11:36:00.819916')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$yDko94TwYGqWlGbJz07lPO6V2mh/Ji/jIticjBJIqspHSQtCToIAy', NULL, NULL, NULL, '2025-06-04 11:36:00.867716', '2025-06-04 11:36:00.867716', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.8ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 78, '2025-06-04 11:36:00.869737', '2025-06-04 11:36:00.869737')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$sAIkPmFkxz982wjj54I.s.7uff6ugoMhLrTS5YZhKYg1JPJMeYu/y', NULL, NULL, NULL, '2025-06-04 11:36:00.882787', '2025-06-04 11:36:00.882787', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.7ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 79, '2025-06-04 11:36:00.885486', '2025-06-04 11:36:00.885486')[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$JHsRWgLp/XsLo0FTYJSvGeDX5bMLJuslfrSmXhju2y5JSm/4ypIry', NULL, NULL, NULL, '2025-06-04 11:36:00.899572', '2025-06-04 11:36:00.899572', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$AhE8/EE9MdX2H8Usfm6IkOFNwqlO.NzlHriTvkYTcGyFU9ICdH4zm', NULL, NULL, NULL, '2025-06-04 11:36:00.912178', '2025-06-04 11:36:00.912178', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$Xgjla5dPEZKmSc9/TWqSG.JRZDgeH89d5XkCcBuAmMg6DsdskxXSu', NULL, NULL, NULL, '2025-06-04 11:36:00.922559', '2025-06-04 11:36:00.922559', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$PYY2ehliZamTxV2L.1PZOezVZkRHwKJB0vPDW1MG885.DxZpwZfkS', NULL, NULL, NULL, '2025-06-04 11:36:00.933600', '2025-06-04 11:36:00.933600', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$z6bbXic2G/pSsSvtATiPsewJn0IrkpEFEOA8mh9jfdLMg9me.xEcu', NULL, NULL, NULL, '2025-06-04 11:36:00.944756', '2025-06-04 11:36:00.944756', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$wZpGKQGDIQVe7NxitLYDeeBUT1yJKRMzT5X2I0qi.EzXRXmNg1jO2', NULL, NULL, NULL, '2025-06-04 11:36:00.954705', '2025-06-04 11:36:00.954705', NULL)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (3.8ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$3j.RU5AwhQKAOjnJdFjadesnQyWkQdVXBWW6Npn6jtajBtB9KCxni', NULL, NULL, NULL, '2025-06-04 11:45:20.448747', '2025-06-04 11:45:20.448747', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.3ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 86, '2025-06-04 11:45:20.463240', '2025-06-04 11:45:20.463240')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (6.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$JaKUnaNX3DBZxArVjIvdVOoame.CUex4jDAbXIocDFmZUeqCBMNwa', NULL, NULL, NULL, '2025-06-04 11:45:20.531815', '2025-06-04 11:45:20.531815', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.8ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 87, '2025-06-04 11:45:20.534468', '2025-06-04 11:45:20.534468')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$.faMOWRYR8SssmJuhAiyleg4X3.rKUgy998dJvFOUimaG3WLCSGVi', NULL, NULL, NULL, '2025-06-04 11:45:20.587325', '2025-06-04 11:45:20.587325', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.9ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 88, '2025-06-04 11:45:20.589613', '2025-06-04 11:45:20.589613')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.8ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$f7TyZPfv/zc5BsJen5QgZuwCIjvSTis8mR4R2jZumms.NJN8FekI2', NULL, NULL, NULL, '2025-06-04 11:45:20.600658', '2025-06-04 11:45:20.600658', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.3ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 89, '2025-06-04 11:45:20.602982', '2025-06-04 11:45:20.602982')[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$Xkm2ZAk/IbQwGoKYhDp1sO5XhI.oycadbR2asMIAzOini93QBsCXO', NULL, NULL, NULL, '2025-06-04 11:45:20.616104', '2025-06-04 11:45:20.616104', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$vm6x2ME50KKjCtLmgsJMVOtEpHTS3GCkBW1l.N5pfk56tsf/0JxM.', NULL, NULL, NULL, '2025-06-04 11:45:20.629507', '2025-06-04 11:45:20.629507', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$1UeBtgZ7JvGovQNXrPrqtuJq04b4TFLWx4uXseo3kK2TMYtr/yGcK', NULL, NULL, NULL, '2025-06-04 11:45:20.639939', '2025-06-04 11:45:20.639939', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$igPgIr5zAiLhs0.EJnsdFO7dRhR8bhKmwC/j1SuC2P4.YzZB2nFx.', NULL, NULL, NULL, '2025-06-04 11:45:20.650857', '2025-06-04 11:45:20.650857', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$87MpW4bShGKnGId1hnETUOoGtT.AtMOQgXsnQcvX7JM.tv9JYWApS', NULL, NULL, NULL, '2025-06-04 11:45:20.660157', '2025-06-04 11:45:20.660157', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (5.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$u/KtjsavcsKzGzKDjg9F9enLVKugdjmreXVMbxm9fVSA/0K3IZSlO', NULL, NULL, NULL, '2025-06-04 11:45:20.671926', '2025-06-04 11:45:20.671926', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$ig92j2e0irF/Gg1X.pMlYu9bPcaGCr4jboSMGzxhgf4eOl.z1.GLS', NULL, NULL, NULL, '2025-06-04 11:45:20.700771', '2025-06-04 11:45:20.700771', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.9ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 96, '2025-06-04 11:45:20.702690', '2025-06-04 11:45:20.702690')[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/projects/29/photos/new" for 127.0.0.1 at 2025-06-04 20:45:20 +0900
+Processing by PhotosController#new as HTML
+  Parameters: {"project_id"=>"29"}
+  [1m[36mProject Load (0.4ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 29 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/new.html.erb within layouts/application
+  Rendered photos/new.html.erb within layouts/application (Duration: 5.5ms | Allocations: 2486)
+  Rendered layout layouts/application.html.erb (Duration: 7.6ms | Allocations: 5084)
+Completed 200 OK in 26ms (Views: 12.2ms | ActiveRecord: 0.4ms | Allocations: 11525)
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$ORPxJhWgE4bOYqlSxG1Ip.w4f3qDahn00SgdS59ewQ77mMmLF2MB6', NULL, NULL, NULL, '2025-06-04 11:45:20.759874', '2025-06-04 11:45:20.759874', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPhoto Count (5.1ms)[0m  [1m[34mSELECT COUNT(*) FROM `photos`[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.9ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 97, '2025-06-04 11:45:20.772164', '2025-06-04 11:45:20.772164')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/30/photos" for 127.0.0.1 at 2025-06-04 20:45:20 +0900
+Processing by PhotosController#create as HTML
+  Parameters: {"photo"=>{"image"=>#<ActionDispatch::Http::UploadedFile:0x00007f64f1d848e0 @tempfile=#<Tempfile:/tmp/RackMultipart20250604-118656-k5tw71.jpg>, @content_type="image/jpeg", @original_filename="test.jpg", @headers="content-disposition: form-data; name=\"photo[image]\"; filename=\"test.jpg\"\r\ncontent-type: image/jpeg\r\ncontent-length: 422928\r\n">, "work_number"=>"12345", "work_content"=>"舗装作業", "location"=>"東京", "date"=>"2025-06-04", "project_name"=>"テストプロジェクト", "contractor"=>"テスト建設"}, "project_id"=>"30"}
+  [1m[36mProject Load (0.4ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 30 LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPhoto Create (1.4ms)[0m  [1m[32mINSERT INTO `photos` (`note`, `taken_at`, `category`, `project_id`, `user_id`, `created_at`, `updated_at`, `image_with_blackboard`, `work_number`, `work_content`, `location`, `date`, `project_name`, `contractor`, `deleted`) VALUES (NULL, NULL, NULL, 30, 97, '2025-06-04 11:45:20.787560', '2025-06-04 11:45:20.787560', NULL, '12345', '舗装作業', '東京', '2025-06-04', 'テストプロジェクト', 'テスト建設', NULL)[0m
+  [1m[36mActiveStorage::Attachment Load (0.9ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 1 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (2.8ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('idofqfmi09y3wsf09kr6xz5ydquu', 'test.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 422928, 'QWQxb1sVj1WycylmmQPzxg==', '2025-06-04 11:45:20.792764')[0m
+  [1m[36mActiveStorage::Attachment Create (1.0ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image', 'Photo', 1, 1, '2025-06-04 11:45:20.796501')[0m
+  [1m[36mPhoto Update (0.9ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 11:45:20.798723' WHERE `photos`.`id` = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (1.6ms) [0m[32mUploaded file to key: idofqfmi09y3wsf09kr6xz5ydquu (checksum: QWQxb1sVj1WycylmmQPzxg==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 81b21d6c-0370-4da6-8891-ecf03327fa7d) to Test(default) with arguments: #<GlobalID:0x00007f64f1c6af90 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/1>>
+[36m  Disk Storage (0.4ms) [0m[34mDownloaded file from key: idofqfmi09y3wsf09kr6xz5ydquu[0m
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Blob Load (1.2ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` INNER JOIN `active_storage_attachments` ON `active_storage_blobs`.`id` = `active_storage_attachments`.`blob_id` WHERE `active_storage_attachments`.`record_id` = 1 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Attachment Load (0.7ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 1 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (0.7ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('x4rgyeet8yclcfqtqdblk4vsrc4z', 'combined_1.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 471508, 'Be0oVaRT+GfgkiZyALUvZg==', '2025-06-04 11:45:21.573617')[0m
+  [1m[36mActiveStorage::Attachment Create (0.7ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image_with_blackboard', 'Photo', 1, 2, '2025-06-04 11:45:21.575091')[0m
+  [1m[36mPhoto Update (0.8ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 11:45:21.576791' WHERE `photos`.`id` = 1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (2.8ms) [0m[32mUploaded file to key: x4rgyeet8yclcfqtqdblk4vsrc4z (checksum: Be0oVaRT+GfgkiZyALUvZg==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: edfb7e75-52cf-433e-86bf-8c70c09a3446) to Test(default) with arguments: #<GlobalID:0x00007f64f16194c0 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/2>>
+Redirected to http://www.example.com/projects/30/photos/1
+Completed 302 Found in 799ms (ActiveRecord: 12.9ms | Allocations: 11111)
+  [1m[36mPhoto Count (0.8ms)[0m  [1m[34mSELECT COUNT(*) FROM `photos`[0m
+  [1m[36mTRANSACTION (7.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$t5FqQUiiQqnXr6sSx3EPfugg4PUDKYpPTx9EIzfr13wDXvj86RaMm', NULL, NULL, NULL, '2025-06-04 11:52:45.110832', '2025-06-04 11:52:45.110832', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.9ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 98, '2025-06-04 11:52:45.125503', '2025-06-04 11:52:45.125503')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$QRc4LtPkkjHUjMUqh7v7mePJXWkt4MkSTtTc48M3HVWCZLOuF2EIm', NULL, NULL, NULL, '2025-06-04 11:52:45.188506', '2025-06-04 11:52:45.188506', NULL)[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.6ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 99, '2025-06-04 11:52:45.191100', '2025-06-04 11:52:45.191100')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$jHwdi/ktOPCXh8SgudDTT.vSZ4XGL.mry348taXgMuXOKj4bdpf/O', NULL, NULL, NULL, '2025-06-04 11:52:45.285332', '2025-06-04 11:52:45.285332', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.5ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 100, '2025-06-04 11:52:45.286971', '2025-06-04 11:52:45.286971')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$61roLLKBbe.4DYsA1tHBo.HJA3MNA2hP/cpy/N7LUrhXXgqrLy9F2', NULL, NULL, NULL, '2025-06-04 11:52:45.296507', '2025-06-04 11:52:45.296507', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.0ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 101, '2025-06-04 11:52:45.298599', '2025-06-04 11:52:45.298599')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$grVch/FwnkEW7lo5342KkehAEpaCMYTw3ym3DFOCiMhQEbx6wol1i', NULL, NULL, NULL, '2025-06-04 11:52:45.312207', '2025-06-04 11:52:45.312207', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$HLmPVvaxbBlmHo8BeHNmL.G.LWHC4Vu6admo0/Qvp3fhrhd9WGnDG', NULL, NULL, NULL, '2025-06-04 11:52:45.325540', '2025-06-04 11:52:45.325540', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$9DeGnx69cvwpx.m/aITk8eHPnZjKS1Nr/F5OsxOildBM/yc6d2zIW', NULL, NULL, NULL, '2025-06-04 11:52:45.335461', '2025-06-04 11:52:45.335461', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$RBr4mOlkyqJuQyCjPgSZqOJqMUk7qXMJkXbTEuAoY9kuC2WDpAbyK', NULL, NULL, NULL, '2025-06-04 11:52:45.345471', '2025-06-04 11:52:45.345471', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (4.7ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$AMn6ctBS6GrCQcnNc8YPauOqdoHmedC4gNh4YKWQwDDwHB2E1cFAa', NULL, NULL, NULL, '2025-06-04 11:52:45.356516', '2025-06-04 11:52:45.356516', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$.nEK.OBMo/uI6ahY0ZRPjujIqKi2YYoog9u4SLYsvQjsXOb6IBXeS', NULL, NULL, NULL, '2025-06-04 11:52:45.366299', '2025-06-04 11:52:45.366299', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$HbsARUBOFhhP5a7qHhcqkOjT2iPud1NXWJ33Qa3lLDR4ljbOK.z66', NULL, NULL, NULL, '2025-06-04 11:52:45.388055', '2025-06-04 11:52:45.388055', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.8ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 108, '2025-06-04 11:52:45.389852', '2025-06-04 11:52:45.389852')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/projects/35/photos/new" for 127.0.0.1 at 2025-06-04 20:52:45 +0900
+Processing by PhotosController#new as HTML
+  Parameters: {"project_id"=>"35"}
+  [1m[36mProject Load (0.4ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 35 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/new.html.erb within layouts/application
+  Rendered photos/new.html.erb within layouts/application (Duration: 4.8ms | Allocations: 2486)
+  Rendered layout layouts/application.html.erb (Duration: 6.6ms | Allocations: 5084)
+Completed 200 OK in 22ms (Views: 10.7ms | ActiveRecord: 0.4ms | Allocations: 11525)
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$rh/k7gq3nh6Jq1oSe1INk.Xz.vECFDKhza/9.sm1nUm/XQ0wnWU6q', NULL, NULL, NULL, '2025-06-04 11:52:45.441651', '2025-06-04 11:52:45.441651', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mPhoto Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM `photos`[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.6ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 109, '2025-06-04 11:52:45.446970', '2025-06-04 11:52:45.446970')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/36/photos" for 127.0.0.1 at 2025-06-04 20:52:45 +0900
+Processing by PhotosController#create as HTML
+  Parameters: {"photo"=>{"image"=>#<ActionDispatch::Http::UploadedFile:0x00007f07afdfbbd8 @tempfile=#<Tempfile:/tmp/RackMultipart20250604-119535-7kkyxw.jpg>, @content_type="image/jpeg", @original_filename="test.jpg", @headers="content-disposition: form-data; name=\"photo[image]\"; filename=\"test.jpg\"\r\ncontent-type: image/jpeg\r\ncontent-length: 422928\r\n">, "work_number"=>"12345", "work_content"=>"舗装作業", "location"=>"東京", "date"=>"2025-06-04", "project_name"=>"テストプロジェクト", "contractor"=>"テスト建設"}, "project_id"=>"36"}
+  [1m[36mProject Load (0.5ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 36 LIMIT 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPhoto Create (0.7ms)[0m  [1m[32mINSERT INTO `photos` (`note`, `taken_at`, `category`, `project_id`, `user_id`, `created_at`, `updated_at`, `image_with_blackboard`, `work_number`, `work_content`, `location`, `date`, `project_name`, `contractor`, `deleted`) VALUES (NULL, NULL, NULL, 36, 109, '2025-06-04 11:52:45.461072', '2025-06-04 11:52:45.461072', NULL, '12345', '舗装作業', '東京', '2025-06-04', 'テストプロジェクト', 'テスト建設', NULL)[0m
+  [1m[36mActiveStorage::Attachment Load (0.5ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 2 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (1.0ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('cg1g3tmatxemp8msc8fvlzivqwtl', 'test.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 422928, 'QWQxb1sVj1WycylmmQPzxg==', '2025-06-04 11:52:45.464449')[0m
+  [1m[36mActiveStorage::Attachment Create (0.6ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image', 'Photo', 2, 3, '2025-06-04 11:52:45.467113')[0m
+  [1m[36mPhoto Update (0.5ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 11:52:45.468542' WHERE `photos`.`id` = 2[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (2.7ms) [0m[32mUploaded file to key: cg1g3tmatxemp8msc8fvlzivqwtl (checksum: QWQxb1sVj1WycylmmQPzxg==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 14df4230-7150-4599-b768-6b60cb73922c) to Test(default) with arguments: #<GlobalID:0x00007f07afda7330 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/3>>
+[36m  Disk Storage (0.3ms) [0m[34mDownloaded file from key: cg1g3tmatxemp8msc8fvlzivqwtl[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Blob Load (0.6ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` INNER JOIN `active_storage_attachments` ON `active_storage_blobs`.`id` = `active_storage_attachments`.`blob_id` WHERE `active_storage_attachments`.`record_id` = 2 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Attachment Load (0.3ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 2 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (0.7ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('ck4y5kspgkv8yuacmri88ou3y13q', 'combined_2.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 471508, 'Be0oVaRT+GfgkiZyALUvZg==', '2025-06-04 11:52:46.132077')[0m
+  [1m[36mActiveStorage::Attachment Create (0.7ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image_with_blackboard', 'Photo', 2, 4, '2025-06-04 11:52:46.133466')[0m
+  [1m[36mPhoto Update (0.4ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 11:52:46.134669' WHERE `photos`.`id` = 2[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (1.9ms) [0m[32mUploaded file to key: ck4y5kspgkv8yuacmri88ou3y13q (checksum: Be0oVaRT+GfgkiZyALUvZg==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 68904bd9-47a4-4972-b9c0-fde4dda77083) to Test(default) with arguments: #<GlobalID:0x00007f07af6c5760 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/4>>
+Redirected to http://www.example.com/projects/36/photos/2
+Completed 302 Found in 683ms (ActiveRecord: 7.2ms | Allocations: 11116)
+  [1m[36mPhoto Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM `photos`[0m
+  [1m[36mPhoto Load (0.3ms)[0m  [1m[34mSELECT `photos`.* FROM `photos` ORDER BY `photos`.`id` DESC LIMIT 1[0m
+  [1m[36mTRANSACTION (2.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.2ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (1.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$E2fdKrsvEg8tzzzHCTOeTO9awSbZWTgRzI7EnqkqTj5dxKtnCLrOq', NULL, NULL, NULL, '2025-06-04 12:09:39.617530', '2025-06-04 12:09:39.617530', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (6.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (2.7ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.9ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$dQdC2MMJ9pFSghr06OZxrupKXS6kh4hclz18nsMtZNVRnT7lmkmPW', NULL, NULL, NULL, '2025-06-04 12:17:07.354085', '2025-06-04 12:17:07.354085', NULL)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.4ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 111, '2025-06-04 12:17:07.378092', '2025-06-04 12:17:07.378092')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/projects/37/photos/new" for 127.0.0.1 at 2025-06-04 21:17:07 +0900
+Processing by PhotosController#new as HTML
+  Parameters: {"project_id"=>"37"}
+  [1m[36mProject Load (0.5ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 37 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/new.html.erb within layouts/application
+  Rendered photos/new.html.erb within layouts/application (Duration: 4.8ms | Allocations: 2503)
+  Rendered layout layouts/application.html.erb (Duration: 6.6ms | Allocations: 5100)
+Completed 200 OK in 143ms (Views: 10.8ms | ActiveRecord: 3.2ms | Allocations: 59292)
+  [1m[36mTRANSACTION (4.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$.Rib35.6jYKJSzRldc6ktehVXJ2dtek37LqXLJ2jmQFY3i62SDMG6', NULL, NULL, NULL, '2025-06-04 12:23:45.881259', '2025-06-04 12:23:45.881259', NULL)[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (1.3ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 112, '2025-06-04 12:23:45.894045', '2025-06-04 12:23:45.894045')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/projects/38/photos/new" for 127.0.0.1 at 2025-06-04 21:23:45 +0900
+Processing by PhotosController#new as HTML
+  Parameters: {"project_id"=>"38"}
+  [1m[36mProject Load (0.4ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 38 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/new.html.erb within layouts/application
+  Rendered photos/new.html.erb within layouts/application (Duration: 4.1ms | Allocations: 2503)
+  Rendered layout layouts/application.html.erb (Duration: 5.9ms | Allocations: 5100)
+Completed 200 OK in 72ms (Views: 8.7ms | ActiveRecord: 2.4ms | Allocations: 59294)
+Started POST "/projects/38/photos" for 127.0.0.1 at 2025-06-04 21:23:46 +0900
+Processing by PhotosController#create as HTML
+  Parameters: {"photo"=>{"image"=>#<ActionDispatch::Http::UploadedFile:0x00007f7778935840 @tempfile=#<Tempfile:/tmp/RackMultipart20250604-121310-n542s3.jpg>, @content_type="image/jpeg", @original_filename="test.jpg", @headers="content-disposition: form-data; name=\"photo[image]\"; filename=\"test.jpg\"\r\ncontent-type: image/jpeg\r\ncontent-length: 422928\r\n">, "date"=>"2025-06-04", "work_number"=>"工事番号123", "project_name"=>"テスト工事", "work_content"=>"舗装工事", "location"=>"東京都中央区", "contractor"=>"", "note"=>""}, "commit"=>"アップロード", "project_id"=>"38"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`id` = 112 ORDER BY `users`.`id` ASC LIMIT 1[0m
+  [1m[36mProject Load (0.2ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 38 LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPhoto Create (1.2ms)[0m  [1m[32mINSERT INTO `photos` (`note`, `taken_at`, `category`, `project_id`, `user_id`, `created_at`, `updated_at`, `image_with_blackboard`, `work_number`, `work_content`, `location`, `date`, `project_name`, `contractor`, `deleted`) VALUES ('', NULL, NULL, 38, 112, '2025-06-04 12:23:46.030836', '2025-06-04 12:23:46.030836', NULL, '工事番号123', '舗装工事', '東京都中央区', '2025-06-04', 'テスト工事', '', NULL)[0m
+  [1m[36mActiveStorage::Attachment Load (0.7ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 3 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (0.9ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('cv8clhclf3ttp00iu48xgnn9pzax', 'test.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 422928, 'QWQxb1sVj1WycylmmQPzxg==', '2025-06-04 12:23:46.034950')[0m
+  [1m[36mActiveStorage::Attachment Create (0.5ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image', 'Photo', 3, 5, '2025-06-04 12:23:46.036675')[0m
+  [1m[36mPhoto Update (0.7ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 12:23:46.037819' WHERE `photos`.`id` = 3[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (1.9ms) [0m[32mUploaded file to key: cv8clhclf3ttp00iu48xgnn9pzax (checksum: QWQxb1sVj1WycylmmQPzxg==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 873e2912-6cea-4834-92fc-31704ecc517e) to Async(default) with arguments: #<GlobalID:0x00007f77787d15a8 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/5>>
+[36m  Disk Storage (1.1ms) [0m[34mDownloaded file from key: cv8clhclf3ttp00iu48xgnn9pzax[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mActiveStorage::Blob Load (0.9ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 5 LIMIT 1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e] Performing ActiveStorage::AnalyzeJob (Job ID: 873e2912-6cea-4834-92fc-31704ecc517e) from Async(default) enqueued at 2025-06-04T12:23:46.045353798Z with arguments: #<GlobalID:0x00007f77785b6548 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/5>>
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e] [36m  Disk Storage (1.4ms) [0m[34mDownloaded file from key: cv8clhclf3ttp00iu48xgnn9pzax[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mActiveStorage::Blob Update (1.1ms)[0m  [1m[33mUPDATE `active_storage_blobs` SET `active_storage_blobs`.`metadata` = '{\"identified\":true,\"width\":3458,\"height\":2480,\"analyzed\":true}' WHERE `active_storage_blobs`.`id` = 5[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mActiveStorage::Attachment Load (0.9ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`blob_id` = 5[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mPhoto Load (0.8ms)[0m  [1m[34mSELECT `photos`.* FROM `photos` WHERE `photos`.`id` = 3[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mPhoto Update (0.7ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 12:23:46.292071' WHERE `photos`.`id` = 3[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e]   [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [873e2912-6cea-4834-92fc-31704ecc517e] Performed ActiveStorage::AnalyzeJob (Job ID: 873e2912-6cea-4834-92fc-31704ecc517e) from Async(default) in 246.03ms
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Blob Load (0.7ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` INNER JOIN `active_storage_attachments` ON `active_storage_blobs`.`id` = `active_storage_attachments`.`blob_id` WHERE `active_storage_attachments`.`record_id` = 3 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Attachment Load (0.5ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 3 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (0.7ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('sldb2r36c5bhug338rdl5ha7n3f7', 'combined_3.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 470903, 'OZ91VbM5fjujVQ2GlqdyKw==', '2025-06-04 12:23:46.713226')[0m
+  [1m[36mActiveStorage::Attachment Create (0.4ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image_with_blackboard', 'Photo', 3, 6, '2025-06-04 12:23:46.714576')[0m
+  [1m[36mPhoto Update (0.5ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 12:23:46.716119' WHERE `photos`.`id` = 3[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (1.3ms) [0m[32mUploaded file to key: sldb2r36c5bhug338rdl5ha7n3f7 (checksum: OZ91VbM5fjujVQ2GlqdyKw==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 231a2ddb-7a46-4ea2-bfc3-a504032c3daa) to Async(default) with arguments: #<GlobalID:0x00007f7778543f48 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/6>>
+Redirected to http://www.example.com/projects/38/photos/3
+Completed 302 Found in 719ms (ActiveRecord: 12.8ms | Allocations: 31129)
+[ActiveJob] [ActiveStorage::AnalyzeJob] [231a2ddb-7a46-4ea2-bfc3-a504032c3daa]   [1m[36mActiveStorage::Blob Load (1.2ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 6 LIMIT 1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [231a2ddb-7a46-4ea2-bfc3-a504032c3daa] Performing ActiveStorage::AnalyzeJob (Job ID: 231a2ddb-7a46-4ea2-bfc3-a504032c3daa) from Async(default) enqueued at 2025-06-04T12:23:46.719570316Z with arguments: #<GlobalID:0x00007f777852c410 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/6>>
+Started GET "/projects/38/photos/3" for 127.0.0.1 at 2025-06-04 21:23:46 +0900
+Processing by PhotosController#show as HTML
+  Parameters: {"project_id"=>"38", "id"=>"3"}
+[ActiveJob] [ActiveStorage::AnalyzeJob] [231a2ddb-7a46-4ea2-bfc3-a504032c3daa] [36m  Disk Storage (1.7ms) [0m[34mDownloaded file from key: sldb2r36c5bhug338rdl5ha7n3f7[0m
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`id` = 112 ORDER BY `users`.`id` ASC LIMIT 1[0m
+  [1m[36mProject Load (1.5ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 38 LIMIT 1[0m
+  [1m[36mPhoto Load (0.6ms)[0m  [1m[34mSELECT `photos`.* FROM `photos` WHERE `photos`.`project_id` = 38 AND `photos`.`id` = 3 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/show.html.erb within layouts/application
+  [1m[36mActiveStorage::Attachment Load (0.7ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 3 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Load (0.4ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 6 LIMIT 1[0m
+  [1m[36mActiveStorage::Attachment Load (0.8ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 3 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Load (0.3ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 5 LIMIT 1[0m
+  [1m[36mActionLog Exists? (2.8ms)[0m  [1m[34mSELECT 1 AS one FROM `action_logs` WHERE `action_logs`.`photo_id` = 3 LIMIT 1[0m
+  Rendered photos/show.html.erb within layouts/application (Duration: 31.3ms | Allocations: 5092)
+  Rendered layout layouts/application.html.erb (Duration: 31.9ms | Allocations: 5489)
+Completed 200 OK in 39ms (Views: 17.0ms | ActiveRecord: 18.5ms | Allocations: 7067)
+  [1m[36mTRANSACTION (12.8ms)[0m  [1m[31mROLLBACK[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [231a2ddb-7a46-4ea2-bfc3-a504032c3daa] Performed ActiveStorage::AnalyzeJob (Job ID: 231a2ddb-7a46-4ea2-bfc3-a504032c3daa) from Async(default) in 94.54ms
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'schema_sha1' ORDER BY `ar_internal_metadata`.`key` ASC LIMIT 1[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = CAST('test@example.com' AS BINARY) LIMIT 1[0m
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `reset_password_token`, `reset_password_sent_at`, `remember_created_at`, `created_at`, `updated_at`, `name`) VALUES ('test@example.com', '$2a$04$4AZp7aG9ZCnFxRirf6eosO2HumXDodlPsEL5j5lArqwLGNRF85rg2', NULL, NULL, NULL, '2025-06-04 12:24:02.124317', '2025-06-04 12:24:02.124317', NULL)[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mProject Create (0.9ms)[0m  [1m[32mINSERT INTO `projects` (`title`, `site_name`, `start_date`, `end_date`, `user_id`, `created_at`, `updated_at`) VALUES ('テスト工事', 'テスト現場', '2025-06-04', '2025-06-11', 113, '2025-06-04 12:24:02.141341', '2025-06-04 12:24:02.141341')[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/projects/39/photos/new" for 127.0.0.1 at 2025-06-04 21:24:02 +0900
+Processing by PhotosController#new as HTML
+  Parameters: {"project_id"=>"39"}
+  [1m[36mProject Load (0.5ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 39 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/new.html.erb within layouts/application
+  Rendered photos/new.html.erb within layouts/application (Duration: 3.3ms | Allocations: 2503)
+  Rendered layout layouts/application.html.erb (Duration: 5.1ms | Allocations: 5100)
+Completed 200 OK in 65ms (Views: 7.6ms | ActiveRecord: 2.2ms | Allocations: 59294)
+Started POST "/projects/39/photos" for 127.0.0.1 at 2025-06-04 21:24:02 +0900
+Processing by PhotosController#create as HTML
+  Parameters: {"photo"=>{"image"=>#<ActionDispatch::Http::UploadedFile:0x00007ffa0a1d5ec8 @tempfile=#<Tempfile:/tmp/RackMultipart20250604-121370-odajow.jpg>, @content_type="image/jpeg", @original_filename="test.jpg", @headers="content-disposition: form-data; name=\"photo[image]\"; filename=\"test.jpg\"\r\ncontent-type: image/jpeg\r\ncontent-length: 422928\r\n">, "date"=>"2025-06-04", "work_number"=>"工事番号123", "project_name"=>"テスト工事", "work_content"=>"舗装工事", "location"=>"東京都中央区", "contractor"=>"", "note"=>""}, "commit"=>"アップロード", "project_id"=>"39"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`id` = 113 ORDER BY `users`.`id` ASC LIMIT 1[0m
+  [1m[36mProject Load (0.3ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 39 LIMIT 1[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPhoto Create (0.9ms)[0m  [1m[32mINSERT INTO `photos` (`note`, `taken_at`, `category`, `project_id`, `user_id`, `created_at`, `updated_at`, `image_with_blackboard`, `work_number`, `work_content`, `location`, `date`, `project_name`, `contractor`, `deleted`) VALUES ('', NULL, NULL, 39, 113, '2025-06-04 12:24:02.264145', '2025-06-04 12:24:02.264145', NULL, '工事番号123', '舗装工事', '東京都中央区', '2025-06-04', 'テスト工事', '', NULL)[0m
+  [1m[36mActiveStorage::Attachment Load (0.6ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 4 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (0.4ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('qhkykalmcml1dwhegjm385nvwv0l', 'test.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 422928, 'QWQxb1sVj1WycylmmQPzxg==', '2025-06-04 12:24:02.267712')[0m
+  [1m[36mActiveStorage::Attachment Create (0.6ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image', 'Photo', 4, 7, '2025-06-04 12:24:02.268768')[0m
+  [1m[36mPhoto Update (1.1ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 12:24:02.270052' WHERE `photos`.`id` = 4[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (1.2ms) [0m[32mUploaded file to key: qhkykalmcml1dwhegjm385nvwv0l (checksum: QWQxb1sVj1WycylmmQPzxg==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: fd31d00a-2367-4393-b69b-06506cacecc2) to Async(default) with arguments: #<GlobalID:0x00007ffa0a064440 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/7>>
+[36m  Disk Storage (1.4ms) [0m[34mDownloaded file from key: qhkykalmcml1dwhegjm385nvwv0l[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mActiveStorage::Blob Load (0.5ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 7 LIMIT 1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2] Performing ActiveStorage::AnalyzeJob (Job ID: fd31d00a-2367-4393-b69b-06506cacecc2) from Async(default) enqueued at 2025-06-04T12:24:02.274916792Z with arguments: #<GlobalID:0x00007ffa09e493e0 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/7>>
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2] [36m  Disk Storage (3.9ms) [0m[34mDownloaded file from key: qhkykalmcml1dwhegjm385nvwv0l[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mActiveStorage::Blob Update (0.6ms)[0m  [1m[33mUPDATE `active_storage_blobs` SET `active_storage_blobs`.`metadata` = '{\"identified\":true,\"width\":3458,\"height\":2480,\"analyzed\":true}' WHERE `active_storage_blobs`.`id` = 7[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mActiveStorage::Attachment Load (0.6ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`blob_id` = 7[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mPhoto Load (0.6ms)[0m  [1m[34mSELECT `photos`.* FROM `photos` WHERE `photos`.`id` = 4[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mPhoto Update (0.6ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 12:24:02.482581' WHERE `photos`.`id` = 4[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2]   [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [fd31d00a-2367-4393-b69b-06506cacecc2] Performed ActiveStorage::AnalyzeJob (Job ID: fd31d00a-2367-4393-b69b-06506cacecc2) from Async(default) in 208.14ms
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mActiveStorage::Blob Load (0.6ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` INNER JOIN `active_storage_attachments` ON `active_storage_blobs`.`id` = `active_storage_attachments`.`blob_id` WHERE `active_storage_attachments`.`record_id` = 4 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Attachment Load (0.4ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 4 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Create (0.6ms)[0m  [1m[32mINSERT INTO `active_storage_blobs` (`key`, `filename`, `content_type`, `metadata`, `service_name`, `byte_size`, `checksum`, `created_at`) VALUES ('uezv0012eoa8hnet8kvki4o9xo5w', 'combined_4.jpg', 'image/jpeg', '{\"identified\":true}', 'test', 470903, 'OZ91VbM5fjujVQ2GlqdyKw==', '2025-06-04 12:24:02.871220')[0m
+  [1m[36mActiveStorage::Attachment Create (0.4ms)[0m  [1m[32mINSERT INTO `active_storage_attachments` (`name`, `record_type`, `record_id`, `blob_id`, `created_at`) VALUES ('image_with_blackboard', 'Photo', 4, 8, '2025-06-04 12:24:02.872479')[0m
+  [1m[36mPhoto Update (0.5ms)[0m  [1m[33mUPDATE `photos` SET `photos`.`updated_at` = '2025-06-04 12:24:02.873429' WHERE `photos`.`id` = 4[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+[36m  Disk Storage (1.9ms) [0m[32mUploaded file to key: uezv0012eoa8hnet8kvki4o9xo5w (checksum: OZ91VbM5fjujVQ2GlqdyKw==)[0m
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 4959f303-c397-4807-a3cd-2f64e4c5219c) to Async(default) with arguments: #<GlobalID:0x00007ffa09dd7150 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/8>>
+Redirected to http://www.example.com/projects/39/photos/4
+Completed 302 Found in 646ms (ActiveRecord: 11.9ms | Allocations: 31081)
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4959f303-c397-4807-a3cd-2f64e4c5219c]   [1m[36mActiveStorage::Blob Load (1.9ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 8 LIMIT 1[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4959f303-c397-4807-a3cd-2f64e4c5219c] Performing ActiveStorage::AnalyzeJob (Job ID: 4959f303-c397-4807-a3cd-2f64e4c5219c) from Async(default) enqueued at 2025-06-04T12:24:02.877415116Z with arguments: #<GlobalID:0x00007ffa09dbf668 @uri=#<URI::GID gid://construction-photos/ActiveStorage::Blob/8>>
+Started GET "/projects/39/photos/4" for 127.0.0.1 at 2025-06-04 21:24:02 +0900
+Processing by PhotosController#show as HTML
+  Parameters: {"project_id"=>"39", "id"=>"4"}
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4959f303-c397-4807-a3cd-2f64e4c5219c] [36m  Disk Storage (1.3ms) [0m[34mDownloaded file from key: uezv0012eoa8hnet8kvki4o9xo5w[0m
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`id` = 113 ORDER BY `users`.`id` ASC LIMIT 1[0m
+  [1m[36mProject Load (0.6ms)[0m  [1m[34mSELECT `projects`.* FROM `projects` WHERE `projects`.`id` = 39 LIMIT 1[0m
+  [1m[36mPhoto Load (1.1ms)[0m  [1m[34mSELECT `photos`.* FROM `photos` WHERE `photos`.`project_id` = 39 AND `photos`.`id` = 4 LIMIT 1[0m
+  Rendering layout layouts/application.html.erb
+  Rendering photos/show.html.erb within layouts/application
+  [1m[36mActiveStorage::Attachment Load (0.8ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 4 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image_with_blackboard' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Load (0.4ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 8 LIMIT 1[0m
+  [1m[36mActiveStorage::Attachment Load (0.9ms)[0m  [1m[34mSELECT `active_storage_attachments`.* FROM `active_storage_attachments` WHERE `active_storage_attachments`.`record_id` = 4 AND `active_storage_attachments`.`record_type` = 'Photo' AND `active_storage_attachments`.`name` = 'image' LIMIT 1[0m
+  [1m[36mActiveStorage::Blob Load (0.5ms)[0m  [1m[34mSELECT `active_storage_blobs`.* FROM `active_storage_blobs` WHERE `active_storage_blobs`.`id` = 7 LIMIT 1[0m
+  [1m[36mActionLog Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM `action_logs` WHERE `action_logs`.`photo_id` = 4 LIMIT 1[0m
+  Rendered photos/show.html.erb within layouts/application (Duration: 21.4ms | Allocations: 5094)
+  Rendered layout layouts/application.html.erb (Duration: 21.9ms | Allocations: 5491)
+Completed 200 OK in 29ms (Views: 14.1ms | ActiveRecord: 10.6ms | Allocations: 7106)
+  [1m[36mTRANSACTION (4.9ms)[0m  [1m[31mROLLBACK[0m
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4959f303-c397-4807-a3cd-2f64e4c5219c] Performed ActiveStorage::AnalyzeJob (Job ID: 4959f303-c397-4807-a3cd-2f64e4c5219c) from Async(default) in 68.99ms
