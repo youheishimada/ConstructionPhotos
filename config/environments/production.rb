@@ -25,4 +25,6 @@ Rails.application.configure do
   # 必要に応じて下記のSSL/メール/エラー通知などを追記
   # config.force_ssl = true
   # config.action_mailer.raise_delivery_errors = false
+
+  config.consider_all_requests_local = true
 end
