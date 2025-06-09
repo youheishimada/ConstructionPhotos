@@ -63,13 +63,51 @@ end
   end
 
   def update
-    if @photo.update(photo_params)
-      ActionLog.create!(user: current_user, photo: @photo, action_type: "edit")
-      redirect_to [@project, @photo], notice: "写真情報を更新しました。"
-    else
-      render :edit, alert: "更新に失敗しました。"
+  if @photo.update(photo_params)
+    # ✅ 古い黒板付き画像を削除（上書き用）
+    @photo.image_with_blackboard.purge if @photo.image_with_blackboard.attached?
+
+    # ✅ 元画像を一時ファイルに保存
+    tmp_photo_path = Rails.root.join("tmp", "photo_#{@photo.id}.jpg")
+    tmp_output_path = Rails.root.join("tmp", "combined_#{@photo.id}.jpg")
+    File.open(tmp_photo_path, 'wb') { |f| f.write(@photo.image.download) }
+
+    # ✅ 黒板に入れるテキスト情報を再取得
+    text_data = {
+      date: @photo.date&.strftime("%Y年%m月%d日") || "日付未入力",
+      work_number: @photo.work_number || "",
+      work_content: @photo.work_content || "",
+      location: @photo.location || "",
+      project_name: @photo.project_name || "",
+      contractor: @photo.contractor || ""
+    }
+
+    # ✅ 黒板画像を合成
+    Magic::BlackboardOverlay.compose_overlay(
+      photo_path: tmp_photo_path.to_s,
+      output_path: tmp_output_path.to_s,
+      text_data: text_data
+    )
+
+    # ✅ 黒板付き画像を添付
+    File.open(tmp_output_path) do |file|
+      @photo.image_with_blackboard.attach(
+        io: file,
+        filename: "combined_#{@photo.id}.jpg",
+        content_type: 'image/jpeg'
+      )
     end
+
+    # ✅ 後処理（ログと削除）
+    File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
+    File.delete(tmp_output_path) if File.exist?(tmp_output_path)
+
+    ActionLog.create!(user: current_user, photo: @photo, action_type: "edit")
+    redirect_to [@project, @photo], notice: "写真情報を更新しました。"
+  else
+    render :edit, alert: "更新に失敗しました。"
   end
+end
 
 def destroy
   deleted_photo_id = @photo.id
