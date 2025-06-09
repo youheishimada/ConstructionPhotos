@@ -1,33 +1,44 @@
-<h2><%= @project.title %>（<%= @project.site_name %>）</h2>
-<p>開始日: <%= @project.start_date %> / 終了日: <%= @project.end_date %></p>
-<p>現場名：<%= @project.site_name %></p>
+<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+  <div class="card shadow rounded-4 p-4 w-100" style="max-width: 700px;">
+    <h2 class="mb-2 text-center fw-bold" style="letter-spacing: 1px;">
+      <%= @project.title %>（<%= @project.site_name %>）
+    </h2>
+    <p class="mb-2 text-center text-secondary">
+      開始日: <%= @project.start_date %> ／ 終了日: <%= @project.end_date %>
+    </p>
+    <p class="mb-3 text-center text-muted">現場名：<%= @project.site_name %></p>
 
-<%= link_to '写真をアップロード', new_project_photo_path(@project) %>
+    <div class="mb-3 d-grid">
+      <%= link_to '写真をアップロード', new_project_photo_path(@project), class: "btn btn-success" %>
+    </div>
 
-<h3>写真一覧（アップロード日別）</h3>
-
-<% @grouped_photos.each do |date, photos| %>
-  <h4><%= date.strftime("%Y年%m月%d日") %></h4>
-  <ul>
-    <% photos.each do |photo| %>
-      <li>
-        <% if photo.image.attached? %>
-          <%= link_to image_tag(photo.image.variant(resize_to_limit: [100, 100])), project_photo_path(@project, photo) %>
-        <% end %>
-
-        <p>メモ: <%= photo.note %></p>
-
-        <% if photo.image_with_blackboard.attached? %>
-          <p>黒板合成画像:</p>
-          <%= image_tag photo.image_with_blackboard.variant(resize_to_limit: [200, 200]) %>
-        <% else %>
-          <p>黒板合成画像は未生成</p>
-        <% end %>
-
-        <%= link_to '詳細を見る', project_photo_path(@project, photo) %>
-      </li>
+    <h3 class="mb-3 mt-4 fw-semibold">写真一覧（アップロード日別）</h3>
+    <% @grouped_photos.each do |date, photos| %>
+      <div class="mb-2">
+        <h5 class="fw-bold text-primary mb-2"><%= date.strftime("%Y年%m月%d日") %></h5>
+        <div class="row row-cols-1 row-cols-md-2 g-2">
+          <% photos.each do |photo| %>
+            <div class="col">
+              <div class="card h-100 p-2">
+                <% if photo.image.attached? %>
+                  <%= link_to image_tag(photo.image.variant(resize_to_limit: [100, 100]), class: "rounded border d-block mx-auto mb-2"), project_photo_path(@project, photo) %>
+                    <% end %>
+                    <p class="mb-1 small text-center">メモ: <%= photo.note.presence || "（なし）" %></p>
+                   <div class="d-grid mb-2">
+                      <%= link_to '詳細を見る', project_photo_path(@project, photo), class: "btn btn-sm btn-outline-primary" %>
+                    </div>
+                      <% if photo.image_with_blackboard.attached? %>
+                      <p class="mb-1 small text-center">黒板合成画像:</p>
+                      <%= image_tag photo.image_with_blackboard.variant(resize_to_limit: [200, 200]), class: "rounded mb-2 border d-block mx-auto w-100", style: "max-width: 200px; height: auto;" %>
+                    <% else %>
+                     <p class="text-muted small text-center">黒板合成画像は未生成</p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
     <% end %>
-  </ul>
-<% end %>
-</ul>
+  </div>
+</div>
 

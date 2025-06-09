@@ -1,49 +1,58 @@
-<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
-  <div class="w-100" style="max-width: 400px;">
-      <h1>写真詳細</h1>
+<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+  <div class="card shadow rounded-4 p-4 w-100" style="max-width: 500px;">
+    <h2 class="mb-4 text-center fw-bold" style="letter-spacing: 1px;">写真詳細</h2>
 
-      <p>工事番号: <%= @photo.work_number %></p>
-      <p>工事内容: <%= @photo.work_content %></p>
-      <p>工事箇所: <%= @photo.location %></p>
+    <div class="mb-3">
+      <span class="fw-semibold">工事番号：</span><%= @photo.work_number %><br>
+      <span class="fw-semibold">工事箇所：</span><%= @photo.location %><br>
+      <span class="fw-semibold">工事内容：</span><br>
+      <pre class="bg-light rounded p-2"><%= @photo.work_content %></pre>
+    </div>
 
-      <h2>黒板付き画像</h2>
-      <%= image_tag @photo.image_with_blackboard, size: "500x300" if @photo.image_with_blackboard.attached? %>
-
-      <h2>アップロードされた写真</h2>
+    <div class="mb-4 text-center">
+      <h5 class="fw-semibold mb-2">アップロード写真</h5>
       <% if @photo.image.attached? %>
-        <p>元の画像:</p>
-        <%= image_tag @photo.image, width: 300 %>
-      <% end %>
-
-      <h2>黒板付き画像</h2>
-      <% if @photo.image_with_blackboard.attached? %>
-        <%= image_tag @photo.image_with_blackboard %><br>
-        <%= link_to "ダウンロード", rails_blob_path(@photo.image_with_blackboard, disposition: "attachment"), download: "工事写真_#{@photo.id}.jpg" %>
+        <%= image_tag @photo.image.variant(resize_to_limit: [350, 350]), class: "img-fluid rounded mb-2 border", style: "max-width: 90%;" %>
       <% else %>
-        <p>黒板付き画像は未生成です</p>
+        <p class="text-muted">画像はありません。</p>
       <% end %>
+    </div>
 
-      <p>メモ: <%= @photo.note %></p>
+    <div class="mb-4 text-center">
+      <h5 class="fw-semibold mb-2">黒板付き画像</h5>
+      <% if @photo.image_with_blackboard.attached? %>
+        <%= image_tag @photo.image_with_blackboard.variant(resize_to_limit: [350, 350]), class: "img-fluid rounded mb-2 border", style: "max-width: 90%;" %><br>
+        <%= link_to "ダウンロード", rails_blob_path(@photo.image_with_blackboard, disposition: "attachment"), download: "工事写真_#{@photo.id}.jpg", class: "btn btn-outline-secondary btn-sm mt-2" %>
+      <% else %>
+        <p class="text-muted">黒板付き画像は未生成です</p>
+      <% end %>
+    </div>
 
-      <hr>
+    <div class="mb-3">
+      <span class="fw-semibold">メモ：</span><%= @photo.note.presence || "（なし）" %>
+    </div>
 
+    <div class="d-flex gap-2 justify-content-center mb-4">
       <%= link_to '編集する', edit_project_photo_path(@project, @photo), class: "btn btn-primary" %>
-      <%= button_to '削除する', project_photo_path(@project, @photo),
-            method: :delete,
-            data: { confirm: '本当に削除しますか？' },
-            class: "btn btn-danger" %>
-      <h2>編集ログ</h2>
+      <%= button_to '削除する', project_photo_path(@project, @photo), method: :delete,
+            data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger" %>
+    </div>
+
+    <div>
+      <h5 class="fw-semibold mb-2">編集ログ</h5>
       <% if @photo.action_logs.any? %>
-        <ul>
-            <% @photo.action_logs.each do |log| %>
-          <li>
-            <%= log.action_type %> by <%= log.user.name || log.user.email %>
-            - <%= log.created_at.strftime("%Y/%m/%d %H:%M") %>
-          </li>
-            <% end %>
+        <ul class="list-group mb-2">
+          <% @photo.action_logs.each do |log| %>
+            <li class="list-group-item py-1 small">
+              <span class="fw-bold"><%= log.action_type %></span>
+              by <%= log.user&.name || log.user&.email %>
+              - <%= log.created_at.strftime("%Y/%m/%d %H:%M") %>
+            </li>
+          <% end %>
         </ul>
-            <% else %>
-              <p>編集履歴はまだありません。</p>
+      <% else %>
+        <p class="text-muted">編集履歴はまだありません。</p>
       <% end %>
- </div>
+    </div>
+  </div>
 </div>
