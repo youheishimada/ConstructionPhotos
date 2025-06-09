@@ -16,16 +16,20 @@
   </head>
 
   <body>
-    <% if user_signed_in? %>
-  <nav>
-    <%= link_to 'ホーム', root_path %>
-    <% if request.referer.present? %>
-      | <a href="javascript:history.back()">戻る</a>
-    <% end %>
-    <hr>
-  </nav>
-<% end %>
-    <%= yield %>
+   <div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    <div class="w-100" style="max-width: 400px;">
+          <% if user_signed_in? %>
+        <nav>
+          <%= link_to 'ホーム', root_path %>
+          <% if request.referer.present? %>
+            | <a href="javascript:history.back()">戻る</a>
+          <% end %>
+            <hr>
+        </nav>
+      <% end %>
+          <%= yield %>
+    </div>
+</div>
   </body>
 </html>
 

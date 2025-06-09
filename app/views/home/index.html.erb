@@ -1,11 +1,17 @@
-<h1>Construction Photos ホーム</h1>
+<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
+  <h1 class="mb-4 text-center">Construction Photos ホーム</h1>
 
-<% if user_signed_in? %>
-  <p>こんにちは、<%= current_user.email %> さん！</p>
-  <%= button_to 'ログアウト', destroy_user_session_path, method: :delete %><br>
-  <%= link_to 'プロジェクト一覧', projects_path %><br>
-  <%= link_to '新規プロジェクト作成', new_project_path %>
-<% else %>
-  <%= link_to 'ログイン', new_user_session_path %> |
-  <%= link_to '新規登録', new_user_registration_path %>
-<% end %>
+  <% if user_signed_in? %>
+    <p class="mb-3">こんにちは、<%= current_user.email %> さん！</p>
+    <div class="d-flex flex-column gap-2 align-items-center">
+      <%= button_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-outline-danger w-100" %>
+      <%= link_to 'プロジェクト一覧', projects_path, class: "btn btn-primary w-100" %>
+      <%= link_to '新規プロジェクト作成', new_project_path, class: "btn btn-success w-100" %>
+    </div>
+  <% else %>
+    <div class="d-flex gap-2">
+      <%= link_to 'ログイン', new_user_session_path, class: "btn btn-primary" %>
+      <%= link_to '新規登録', new_user_registration_path, class: "btn btn-success" %>
+    </div>
+  <% end %>
+</div>
