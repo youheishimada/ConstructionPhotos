@@ -1,11 +1,22 @@
-<h1>Projects#index</h1>
-<h2>プロジェクト一覧</h2>
-<%= link_to '新規プロジェクト作成', new_project_path %>
-
-<ul>
-  <% @projects.each do |project| %>
-    <li>
-      <%= link_to project.title, project_path(project) %>
-    </li>
-  <% end %>
-</ul>
+<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+  <div class="card shadow rounded-4 p-4 w-100" style="max-width: 500px;">
+    <h2 class="mb-4 text-center fw-bold" style="letter-spacing: 1px;">プロジェクト一覧</h2>
+    <div class="d-grid mb-4">
+      <%= link_to '新規プロジェクト作成', new_project_path, class: "btn btn-success w-100" %>
+    </div>
+    <% if @projects.present? %>
+      <ul class="list-group mb-3">
+        <% @projects.each do |project| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <%= link_to project_path(project), class: "d-flex justify-content-between align-items-center w-100 text-decoration-none text-dark" do %>
+              <span><%= project.title %></span>
+              <i class="bi bi-chevron-right"></i> <!-- Bootstrap Icons を使う場合 -->
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-center text-muted">まだプロジェクトがありません</p>
+    <% end %>
+  </div>
+</div>

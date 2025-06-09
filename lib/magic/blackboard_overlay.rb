@@ -14,15 +14,23 @@ module Magic
       # 黒板に文字を1行ずつ描画
       blackboard.combine_options do |c|
         c.gravity "NorthWest"
-        c.pointsize 12
+        c.font "app/assets/fonts/ipaexg.ttf"
         c.fill "white"
+        c.pointsize (blackboard.height * 0.06).to_i 
         c.font "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"       
-        c.draw "text 20,30 \"年月日: #{text_data[:date]}\""
-        c.draw "text 20,60 \"工事番号: #{text_data[:work_number].gsub('-', '－')}\""
-        c.draw "text 20,90 \"工事件名: #{text_data[:project_name]}\""
-        c.draw "text 20,120 \"工事内容: #{text_data[:work_content]}\""
-        c.draw "text 20,150 \"箇所: #{text_data[:location]}\""
-        c.draw "text 20,180 \"施工者: #{text_data[:contractor]}\""
+        c.draw "text 10,10 \"年月日: #{text_data[:date]}\""
+        c.draw "text 10,20 \"工事番号: #{text_data[:work_number].gsub('-', '－')}\""
+        c.draw "text 10,30 \"工事件名: #{text_data[:project_name]}\""
+        # --- 複数行の工事内容 ---
+        y = 40
+        line_height = 10
+        text_data[:work_content].to_s.split(/\r?\n/).each do |line|
+          c.draw "text 10,#{y} \"#{line}\""
+          y += line_height
+        end
+        # --- 以下も同じように ---
+        c.draw "text 10,#{y+10} \"箇所: #{text_data[:location]}\""
+        c.draw "text 10,#{y+20} \"施工者: #{text_data[:contractor]}\""
       end
 
       # 写真に黒板を左下に合成

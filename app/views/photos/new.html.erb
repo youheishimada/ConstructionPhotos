@@ -1,52 +1,55 @@
-<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
-  <div class="w-100" style="max-width: 400px;">
-      <h1>写真アップロード</h1>
+<div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center bg-light">
+  <div class="card shadow rounded-4 p-4 w-100" style="max-width: 400px;">
+    <h2 class="mb-4 text-center fw-bold" style="letter-spacing: 1px;">写真アップロード</h2>
 
-      <%= form_with model: [@project, @photo], local: true do |form| %>
-        <div>
-          <%= form.label :image, "写真のアップロード" %><br>
-          <%= form.file_field :image %>
-        </div>
+    <%# ▼ バリデーションエラー表示（もし必要なら） %>
+    <% if @photo.errors.any? %>
+      <div class="alert alert-danger">
+        <h4 class="alert-heading"><%= pluralize(@photo.errors.count, "件のエラー") %>があります:</h4>
+        <ul class="mb-0">
+          <% @photo.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-        <div>
-          <%= form.label :date, "年月日" %><br>
-          <%= form.date_field :date, value: Date.today %>
-        </div>
-
-        <div>
-          <%= form.label :work_number, "工事番号" %><br>
-          <%= form.text_field :work_number %>
-        </div>
-
-        <div>
-          <%= form.label :project_name, "工事件名" %><br>
-          <%= form.text_field :project_name, value: @project.title %>
-        </div>
-
-        <div>
-          <%= form.label :work_content, "工事内容" %><br>
-          <%= form.text_field :work_content %>
-        </div>
-
-        <div>
-          <%= form.label :location, "箇所" %><br>
-          <%= form.text_field :location %>
-        </div>
-        
-        <div>
-          <%= form.label :contractor, "施工者" %><br>
-          <%= form.text_field :contractor, value: current_user.name %>
-        </div>
-
-        <div>
-          <%= form.label :note, "備考（任意）" %><br>
-          <%= form.text_area :note %>
-        </div>
-
-        <div>
-          <%= form.submit "アップロード" %>
-        </div>
-      <% end %>
-    </div>
+    <%= form_with model: [@project, @photo], local: true do |form| %>
+      <div class="mb-3">
+        <%= form.label :image, "写真のアップロード", class: "form-label" %>
+        <%= form.file_field :image, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :date, "年月日", class: "form-label" %>
+        <%= form.date_field :date, value: Date.today, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :work_number, "工事番号", class: "form-label" %>
+        <%= form.text_field :work_number, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :project_name, "工事件名", class: "form-label" %>
+        <%= form.text_field :project_name, value: @project.title, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :work_content, "工事内容", class: "form-label" %>
+        <%= form.text_area :work_content, class: "form-control", rows: 3 %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :location, "箇所", class: "form-label" %>
+        <%= form.text_field :location, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :contractor, "施工者", class: "form-label" %>
+        <%= form.text_field :contractor, value: current_user.name, class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :note, "備考（任意）", class: "form-label" %>
+        <%= form.text_area :note, class: "form-control" %>
+      </div>
+      <div class="d-grid gap-2">
+        <%= form.submit "アップロード", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
 </div>
