@@ -88,5 +88,5 @@
 shimada（個人開発／ポートフォリオ用途）
 
 
-!![ER図](https://drive.google.com/drive/folders/1sFq5JV558vcUrx0OsMWv27OKQONYVMwz)
+!![ER図](https://lucid.app/lucidchart/52b135d4-06b8-40fb-b398-ed10fe506649/edit?viewport_loc=-11185%2C-6607%2C22205%2C8964%2Czok3yUf69dyn&invitationId=inv_f91aaa72-f8c0-46b3-baa2-de4a21e6498a)
 
