@@ -1,24 +1,7 @@
-# README
+# 建設写真支援アプリ
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### 手軽に工事写真の合成機能”業務の効率化”と”現場の負担の軽減”
 
-Things you may want to cover:
+このアプリは、**工事写真のアップロードと黒板の合成、合成写真のダウンロード機能**を実装した現場写真管理、編集、工事写真台帳作成支援ツールです。
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ー
