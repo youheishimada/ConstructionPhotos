@@ -26,6 +26,6 @@ ja:
       send_instructions: "アカウントのロック解除方法を送信しました。"
       unlocked: "アカウントのロックが解除されました。"
 
-    errors:
+  errors:
     messages:
       not_saved: "%{resource}の保存に失敗しました。以下のエラーを確認してください。"
