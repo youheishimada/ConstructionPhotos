@@ -1,0 +1,27 @@
+ja:
+  devise:
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "すでにログアウトしています。"
+    passwords:
+      send_instructions: "パスワード再設定の案内メールを送信しました。"
+      updated: "パスワードを変更しました。"
+      updated_not_active: "パスワードを変更しましたが、アカウントは有効化されていません。"
+    registrations:
+      signed_up: "アカウント登録が完了しました。"
+      updated: "アカウント情報を更新しました。"
+      destroyed: "アカウントを削除しました。ご利用ありがとうございました。"
+    failure:
+      already_authenticated: "すでにログインしています。"
+      unauthenticated: "ログインしてください。"
+      invalid: "メールアドレスまたはパスワードが違います。"
+      not_found_in_database: "入力された情報が正しくありません。"
+      timeout: "セッションがタイムアウトしました。もう一度ログインしてください。"
+      inactive: "アカウントが有効化されていません。"
+    confirmations:
+      send_instructions: "確認メールを送信しました。"
+      confirmed: "メールアドレスが確認されました。"
+    unlocks:
+      send_instructions: "アカウントのロック解除方法を送信しました。"
+      unlocked: "アカウントのロックが解除されました。"
