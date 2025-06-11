@@ -32,3 +32,5 @@
 # ⚠️ 画像のZone.Identifier情報や一時生成画像
 *.jpg:Zone.Identifier
 output_image.jpg
+
+*.Zone.Identifier
